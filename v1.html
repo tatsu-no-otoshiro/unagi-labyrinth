@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>うなぎ迷路 Ver1.0</title>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#9ed8ff}
+canvas{display:block}
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+<script>
+const canvas=document.getElementById("game");
+const ctx=canvas.getContext("2d");
+
+const TILE=32;
+const maze=[
+"####################",
+"#S     #          G#",
+"# ### ### ####### ##",
+"#   #     #       ##",
+"### ##### # ##### ##",
+"#       # #     # ##",
+"# ##### # ##### # ##",
+"#     #         # ##",
+"####################"
+];
+
+const eel={x:0,y:0,angle:0,speed:2.5,radius:10};
+const target={x:0,y:0};
+const goal={x:0,y:0,r:12};
+const walls=[];
+let ox=0,oy=0;
+
+function buildMaze(){
+ walls.length=0;
+ const mw=maze[0].length*TILE,mh=maze.length*TILE;
+ ox=(canvas.width-mw)/2; oy=(canvas.height-mh)/2;
+ for(let y=0;y<maze.length;y++){
+   for(let x=0;x<maze[y].length;x++){
+     const c=maze[y][x];
+     const px=ox+x*TILE, py=oy+y*TILE;
+     if(c=="#") walls.push({x:px,y:py,w:TILE,h:TILE});
+     if(c=="S"){eel.x=px+TILE/2; eel.y=py+TILE/2; target.x=eel.x; target.y=eel.y;}
+     if(c=="G"){goal.x=px+TILE/2; goal.y=py+TILE/2;}
+   }
+ }
+}
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight;buildMaze();}
+addEventListener("resize",resize);
+
+function hit(){
+ for(const w of walls){
+  if(eel.x+eel.radius>w.x&&eel.x-eel.radius<w.x+w.w&&eel.y+eel.radius>w.y&&eel.y-eel.radius<w.y+w.h)return true;
+ }
+ return false;
+}
+canvas.addEventListener("mousemove",e=>{target.x=e.clientX;target.y=e.clientY;});
+canvas.addEventListener("touchmove",e=>{e.preventDefault();target.x=e.touches[0].clientX;target.y=e.touches[0].clientY;},{passive:false});
+
+function update(){
+ let dx=target.x-eel.x,dy=target.y-eel.y,d=Math.hypot(dx,dy);
+ if(d>1){
+  eel.angle=Math.atan2(dy,dx);
+  let mx=dx/d*eel.speed,my=dy/d*eel.speed;
+  let old=eel.x; eel.x+=mx; if(hit()) eel.x=old;
+  old=eel.y; eel.y+=my; if(hit()) eel.y=old;
+ }
+ if(Math.hypot(goal.x-eel.x,goal.y-eel.y)<goal.r+eel.radius){
+   alert("クリア！");
+   buildMaze();
+ }
+}
+function draw(){
+ ctx.clearRect(0,0,canvas.width,canvas.height);
+ ctx.fillStyle="#444";
+ for(const w of walls)ctx.fillRect(w.x,w.y,w.w,w.h);
+ ctx.fillStyle="gold";
+ ctx.beginPath();ctx.arc(goal.x,goal.y,goal.r,0,Math.PI*2);ctx.fill();
+ ctx.save();
+ ctx.translate(eel.x,eel.y);ctx.rotate(eel.angle);
+ ctx.fillStyle="#5a3b1f";
+ ctx.beginPath();ctx.ellipse(0,0,20,8,0,0,Math.PI*2);ctx.fill();
+ ctx.fillStyle="#fff";ctx.beginPath();ctx.arc(10,-2,1.5,0,Math.PI*2);ctx.fill();
+ ctx.restore();
+}
+function loop(){update();draw();requestAnimationFrame(loop);}
+resize();loop();
+</script>
+</body></html>
