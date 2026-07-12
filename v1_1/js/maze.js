@@ -1,0 +1,1 @@
+const MAZE_VERSION='alpha1';
