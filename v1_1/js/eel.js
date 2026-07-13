@@ -97,10 +97,11 @@ export class Eel {
 
         }
 
-        if (this.history.length > delay + 50) {
+        const maxHistory =
+            CONFIG.BODY_COUNT * CONFIG.BODY_DELAY + 10;
 
+        if (this.history.length > maxHistory) {
             this.history.pop();
-
         }
 
     }
