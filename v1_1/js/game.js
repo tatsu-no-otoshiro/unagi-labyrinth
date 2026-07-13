@@ -24,6 +24,9 @@ export class Game {
     start() {
 
         this.resize();
+
+        this.eel.reset();
+
         this.loop();
 
     }
@@ -34,6 +37,8 @@ export class Game {
         this.canvas.height = window.innerHeight;
 
         this.maze.build();
+
+        this.eel.reset();
 
     }
 
