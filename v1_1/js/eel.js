@@ -96,8 +96,6 @@ export class Eel {
             y: this.y
         });
 
-        console.log(this.history.length);
-
         for (let i = 0; i < this.body.length; i++) {
 
             const index =
