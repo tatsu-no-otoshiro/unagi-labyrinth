@@ -1,6 +1,8 @@
 export class Maze {
 
-    constructor(){
+    constructor(game) {
+
+        this.game = game;
 
     }
 
