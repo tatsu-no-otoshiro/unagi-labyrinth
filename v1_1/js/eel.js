@@ -75,33 +75,37 @@ export class Eel {
             this.y = oldY;
         }
 
-        this.history.unshift({
-            x: this.x,
-            y: this.y
-        });
-
         for (let i = 0; i < this.body.length; i++) {
 
-            const index =
-                (i + 1) * CONFIG.BODY_DELAY;
+            let target;
 
-            if (this.history.length > index) {
+            if (i === 0) {
 
-                this.body[i].x =
-                    this.history[index].x;
+                target = this;
 
-                this.body[i].y =
-                    this.history[index].y;
+            } else {
+
+                target = this.body[i - 1];
 
             }
 
-        }
+            const dx = target.x - this.body[i].x;
+            const dy = target.y - this.body[i].y;
 
-        const maxHistory =
-            CONFIG.BODY_COUNT * CONFIG.BODY_DELAY + 10;
+            const dist = Math.hypot(dx, dy);
 
-        if (this.history.length > maxHistory) {
-            this.history.pop();
+            const spacing = CONFIG.BODY_RADIUS * 1.8;
+
+            if (dist > spacing) {
+
+                this.body[i].x =
+                    target.x - dx / dist * spacing;
+
+                this.body[i].y =
+                    target.y - dy / dist * spacing;
+
+            }
+
         }
 
     }
