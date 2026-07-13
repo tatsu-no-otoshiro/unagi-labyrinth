@@ -47,7 +47,28 @@ export class Renderer {
 
         ctx.fill();
 
-        // ウナギ
+        // ウナギ 胴体
+        ctx.save();
+
+        ctx.translate(eel.body.x, eel.body.y);
+
+        ctx.fillStyle = CONFIG.COLORS.EEL;
+
+        ctx.beginPath();
+
+        ctx.arc(
+            0,
+            0,
+            CONFIG.BODY_RADIUS,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
+        ctx.restore();
+
+        // ウナギ 頭
         ctx.save();
 
         ctx.translate(eel.x, eel.y);
