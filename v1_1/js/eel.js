@@ -33,27 +33,11 @@ export class Eel {
 
         this.body = [];
 
-        // 胴体を初期配置
-        const spacing = CONFIG.BODY_DELAY * this.speed;
-
         for (let i = 0; i < CONFIG.BODY_COUNT; i++) {
 
             this.body.push({
                 x: this.x,
-                y: this.y + (i + 1) * spacing
-            });
-
-        }
-
-        // 履歴を初期化
-        const maxHistory =
-            CONFIG.BODY_COUNT * CONFIG.BODY_DELAY + 10;
-
-        for (let i = maxHistory; i >= 0; i--) {
-
-            this.history.push({
-                x: this.x,
-                y: this.y + i * this.speed
+                y: this.y
             });
 
         }
@@ -96,7 +80,7 @@ export class Eel {
             let target;
 
             if (i === 0) {
- 
+
                 target = this;
 
             } else {
