@@ -1,6 +1,8 @@
 export class Eel {
 
-    constructor(){
+    constructor(game) {
+
+        this.game = game;
 
     }
 
