@@ -49,7 +49,9 @@ export class Game {
     }
 
     draw() {
-
+        
+        console.log(this.maze.walls.length);
+        
         this.renderer.draw();
 
     }
