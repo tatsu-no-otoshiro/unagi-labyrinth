@@ -34,10 +34,8 @@ export class Input {
 
     reset() {
 
-        const eel = this.game.eel;
-
-        this.target.x = eel.x;
-        this.target.y = eel.y;
+        this.target.x = this.game.eel.x;
+        this.target.y = this.game.eel.y;
 
     }
 
