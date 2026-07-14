@@ -19,7 +19,7 @@ export class Maze {
             "#     # #     #",
             "# ### # ##### #",
             "# #   #     # #",
-            "# # ####### # #",
+            "# # ### ### # #",
             "#         #  G#",
             "###############"
         ];
@@ -62,9 +62,11 @@ export class Maze {
         this.offsetY =
             (canvas.height - this.tileSize * CONFIG.MAP_SIZE) / 2;
 
-        for (let y = 0; y < CONFIG.MAP_SIZE; y++) {
+        const rows = this.map.length;
+        const cols = this.map[0].length;
 
-            for (let x = 0; x < CONFIG.MAP_SIZE; x++) {
+        for (let y = 0; y < rows; y++) {
+            for (let x = 0; x < cols; x++) {
 
                 const ch = this.map[y][x];
 
@@ -78,16 +80,12 @@ export class Maze {
                         y: py
                     });
 
-                }
-
-                if (ch === "S") {
+                } else if (ch === "S") {
 
                     this.start.x = px + this.tileSize / 2;
                     this.start.y = py + this.tileSize / 2;
 
-                }
-
-                if (ch === "G") {
+                } else if (ch === "G") {
 
                     this.goal.x = px + this.tileSize / 2;
                     this.goal.y = py + this.tileSize / 2;
