@@ -45,29 +45,31 @@ export class Game {
     }
 
     update() {
-
         this.eel.update();
 
+        if (this.isGoal()) {
+            this.clear();
+        }
+    }
+
+    isGoal() {
         const goal = this.maze.goal;
         const eel = this.eel;
 
-        if (
-            Math.hypot(
-                goal.x - eel.x,
-                goal.y - eel.y
-            ) < goal.radius + eel.radius
-        ) {
-
-            alert("クリア");
-
-            this.maze.build();
-            this.eel.reset();
-            this.input.reset();
-
-        }
-
+        return (
+            Math.hypot(goal.x - eel.x, goal.y - eel.y) <
+            goal.radius + eel.radius
+        );
     }
-   
+
+    clear() {
+        alert("クリア");
+
+        this.maze.build();
+        this.eel.reset();
+        this.input.reset();
+    }
+
     draw() {
 
         this.renderer.draw();
