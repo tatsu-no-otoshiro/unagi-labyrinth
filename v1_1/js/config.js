@@ -5,7 +5,7 @@ export const CONFIG = {
     MAP_MARGIN: 40,
 
     // タイル
-    TILE_SIZE_MIN: 32,
+    DEFAULT_TILE_SIZE: 32,
 
     // ウナギ
     EEL_SPEED: 2.5,
