@@ -110,31 +110,26 @@ export class Eel {
             y: this.headBackY
         };
 
-        let targetSpacing =
-            spacing + this.game.maze.tileSize * 0.25;
-
-        for (let i = 0; i < this.body.length; i++) {
-
-            const part = this.body[i];
+        for (const part of this.body) {
 
             const vx = part.x - leader.x;
             const vy = part.y - leader.y;
 
             const d = Math.hypot(vx, vy);
 
-            if (d > targetSpacing) {
+            if (d > spacing) {
 
-                const ratio = targetSpacing / d;
+                const ratio = spacing / d;
 
-                part.x = leader.x + vx * ratio;
-                part.y = leader.y + vy * ratio;
+                part.x =
+                    leader.x + vx * ratio;
+
+                part.y =
+                    leader.y + vy * ratio;
 
             }
 
             leader = part;
-
-            // body1以降は通常間隔
-            targetSpacing = spacing;
 
         }
 
