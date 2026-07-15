@@ -104,9 +104,10 @@ export class Eel {
         const spacing =
             CONFIG.BODY_DELAY * this.speed;
 
+        // body[0] は鼻先ではなく頭の後端を追従する
         let leader = {
-            x: this.x,
-            y: this.y
+            x: this.headBackX,
+            y: this.headBackY
         };
 
         for (const part of this.body) {
