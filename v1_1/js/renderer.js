@@ -68,20 +68,10 @@ export class Renderer {
 
             const drawPoints = [];
 
-            // 鼻先から頭の後端までの距離
-            const headLength = maze.tileSize * 0.36;
-
-            // 一本線は頭の後端から始める
-            const headBackX =
-                eel.x - Math.cos(eel.angle) * headLength;
-
-            const headBackY =
-                eel.y - Math.sin(eel.angle) * headLength;
-
             // 頭
             drawPoints.push({
-                x: headBackX,
-                y: headBackY
+                x: eel.x,
+                y: eel.y
             });
 
             // 胴体
@@ -179,7 +169,7 @@ export class Renderer {
         ctx.save();
 
         // 鼻先から頭の中心までの距離
-        const headOffset = headLength * 0.5;
+        const headOffset = maze.tileSize * 0.18;
 
         // 頭の中心を少し後ろへ下げる
         const headCenterX =
