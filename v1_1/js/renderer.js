@@ -144,23 +144,14 @@ export class Renderer {
             // 節
             ctx.fillStyle = CONFIG.COLORS.EEL;
 
-            const bodyCount = drawPoints.length - 1;
-
             for (let i = 1; i < drawPoints.length; i++) {
-
-                // 頭側=0 → 尻尾側=1
-                const t = (i - 1) / Math.max(bodyCount - 1, 1);
-
-                // 頭側はそのまま、尻尾へ向かって細くする
-                const radius =
-                    CONFIG.BODY_RADIUS * (1.0 - 0.45 * t);
 
                 ctx.beginPath();
 
                 ctx.arc(
                     drawPoints[i].x,
                     drawPoints[i].y,
-                    radius,
+                    CONFIG.BODY_RADIUS,
                     0,
                     Math.PI * 2
                 );
@@ -177,9 +168,19 @@ export class Renderer {
 
         ctx.save();
 
+        // 鼻先から頭の中心までの距離
+        const headOffset = maze.tileSize * 0.18;
+
+        // 頭の中心を少し後ろへ下げる
+        const headCenterX =
+            eel.x - Math.cos(eel.angle) * headOffset;
+
+        const headCenterY =
+            eel.y - Math.sin(eel.angle) * headOffset;
+
         ctx.translate(
-            eel.x,
-            eel.y
+            headCenterX,
+            headCenterY
         );
 
         ctx.rotate(
