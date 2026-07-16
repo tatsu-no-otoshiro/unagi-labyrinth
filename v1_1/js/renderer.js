@@ -125,42 +125,45 @@ export class Renderer {
 
             // 一本線
             ctx.strokeStyle = CONFIG.COLORS.EEL;
-            ctx.lineWidth = CONFIG.BODY_RADIUS * 2;
             ctx.lineCap = "round";
             ctx.lineJoin = "round";
 
-            ctx.beginPath();
+            for (let i = drawPoints.length - 1; i > 1; i--) {
 
-            const start = drawPoints[drawPoints.length - 1];
+                const p0 = drawPoints[i];
+                const p1 = drawPoints[i - 1];
 
-            ctx.moveTo(start.x, start.y);
+                // 頭=0、尻尾=1 の割合
+                const t = 1 - (i - 1) / (drawPoints.length - 2);
 
-            // Catmull-Rom風に見える二次曲線
-            for (let i = drawPoints.length - 2; i >= 1; i--) {
+                // 首は少し細く、中央が最大、尻尾へ向かって細く
+                const widthScale =
+                    0.80 +
+                    Math.sin(t * Math.PI) * 0.45;
 
-                const current = drawPoints[i];
+                ctx.lineWidth =
+                    CONFIG.BODY_RADIUS * 2 * widthScale;
 
-                const next =
-                    (i > 1)
-                        ? drawPoints[i - 1]
-                        : current;
+                ctx.beginPath();
 
-                const cx =
-                    (current.x + next.x) * 0.5;
-
-                const cy =
-                    (current.y + next.y) * 0.5;
-
-                ctx.quadraticCurveTo(
-                    current.x,
-                    current.y,
-                    cx,
-                    cy
+                ctx.moveTo(
+                    p0.x,
+                    p0.y
                 );
 
-            }
+                const mx = (p0.x + p1.x) * 0.5;
+                const my = (p0.y + p1.y) * 0.5;
 
-            ctx.stroke();
+                ctx.quadraticCurveTo(
+                    p0.x,
+                    p0.y,
+                    mx,
+                    my
+                );
+
+                ctx.stroke();
+
+            }
 
             // 節
             ctx.fillStyle = CONFIG.COLORS.EEL;
