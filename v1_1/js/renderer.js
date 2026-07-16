@@ -68,10 +68,16 @@ export class Renderer {
 
             const drawPoints = [];
 
-            // 胴体は頭の後端から開始
+            // 中心線の先頭（鼻先）
             drawPoints.push({
-                x: eel.headBackX,
-                y: eel.headBackY
+                x: eel.x,
+                y: eel.y
+            });
+
+            // 頭の節
+            drawPoints.push({
+                x: eel.head.x,
+                y: eel.head.y
             });
 
             // 胴体
@@ -81,12 +87,9 @@ export class Renderer {
 
                 // 前の節（0番は頭）
                 const prev =
-                (i === 0)
-                    ? {
-                        x: eel.headBackX,
-                        y: eel.headBackY
-                    }
-                    : eel.body[i - 1];
+                    (i === 0)
+                        ? eel.head
+                        : eel.body[i - 1];
 
                 let dx = prev.x - part.x;
                 let dy = prev.y - part.y;
