@@ -108,6 +108,10 @@ export class Eel {
             this.y -
             Math.sin(this.angle) * headLength;
 
+        // Head節は現在は headBack と同じ位置
+        this.head.x = this.headBackX;
+        this.head.y = this.headBackY;
+
         // ---------- 胴体追従 ----------
         const spacing =
             CONFIG.BODY_DELAY * this.speed;
