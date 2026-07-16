@@ -131,17 +131,31 @@ export class Renderer {
 
             ctx.beginPath();
 
-            ctx.moveTo(
-                drawPoints[drawPoints.length - 1].x,
-                drawPoints[drawPoints.length - 1].y
-            );
+            const start = drawPoints[drawPoints.length - 1];
 
-            // index0 は nose なので描かない
+            ctx.moveTo(start.x, start.y);
+
+            // Catmull-Rom風に見える二次曲線
             for (let i = drawPoints.length - 2; i >= 1; i--) {
 
-                ctx.lineTo(
-                    drawPoints[i].x,
-                    drawPoints[i].y
+                const current = drawPoints[i];
+
+                const next =
+                    (i > 1)
+                        ? drawPoints[i - 1]
+                        : current;
+
+                const cx =
+                    (current.x + next.x) * 0.5;
+
+                const cy =
+                    (current.y + next.y) * 0.5;
+
+                ctx.quadraticCurveTo(
+                    current.x,
+                    current.y,
+                    cx,
+                    cy
                 );
 
             }
