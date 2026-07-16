@@ -138,8 +138,8 @@ export class Renderer {
 
                 // 首は少し細く、中央が最大、尻尾へ向かって細く
                 const widthScale =
-                    0.80 +
-                    Math.sin(t * Math.PI) * 0.45;
+                    0.92 +
+                    Math.sin(t * Math.PI) * 0.33;
 
                 ctx.lineWidth =
                     CONFIG.BODY_RADIUS * 2 * widthScale;
