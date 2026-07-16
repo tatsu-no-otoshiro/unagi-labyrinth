@@ -175,16 +175,6 @@ export class Renderer {
 
         ctx.save();
 
-        // 鼻先から頭の中心までの距離
-        const headOffset = maze.tileSize * 0.18;
-
-        // 頭の中心を少し後ろへ下げる
-        const headCenterX =
-            eel.x - Math.cos(eel.angle) * headOffset;
-
-        const headCenterY =
-            eel.y - Math.sin(eel.angle) * headOffset;
-
         const headCenterX = (eel.x + eel.head.x) * 0.5;
         const headCenterY = (eel.y + eel.head.y) * 0.5;
 
