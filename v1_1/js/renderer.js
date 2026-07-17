@@ -137,9 +137,19 @@ export class Renderer {
                 const t = 1 - (i - 1) / (drawPoints.length - 2);
 
                 // 首は少し細く、中央が最大、尻尾へ向かって細く
-                const widthScale =
-                    0.92 +
-                    Math.sin(t * Math.PI) * 0.33;
+                let widthScale =
+    		    0.92 +
+    		    Math.sin(t * Math.PI) * 0.33;
+
+		// 尾柄・尾先だけ細くする
+		if (t > 0.75) {
+
+    		    const k = (t - 0.75) / 0.25;
+
+    		    widthScale *=
+        		1 - 0.45 * k;
+
+		}
 
                 ctx.lineWidth =
                     CONFIG.BODY_RADIUS * 2 * widthScale;
