@@ -66,13 +66,6 @@ export class Renderer {
             }
             this.waveTime += 0.08;
 
-	    // drawPoints の構成
-	    // [0] 鼻先
-	    // [1] Head節
-	    // [2] body[0]
-	    // [3] body[1]
-	    // ...
-	    // [last] body[last]
             const drawPoints = [];
 
             // 中心線の先頭（鼻先）
@@ -140,26 +133,13 @@ export class Renderer {
                 const p0 = drawPoints[i];
                 const p1 = drawPoints[i - 1];
 
-                // 現在の計算（後で整理予定）
+                // 頭=0、尻尾=1 の割合
                 const t = 1 - (i - 1) / (drawPoints.length - 2);
 
-		// TODO:
-		// bodyIndex と tailRatio を使う形へ整理予定
-
                 // 首は少し細く、中央が最大、尻尾へ向かって細く
-                let widthScale =
-    		    0.92 +
-    		    Math.sin(t * Math.PI) * 0.33;
-
-		// 尾柄・尾先だけ細くする
-		if (t > 0.75) {
-
-    		    const k = (t - 0.75) / 0.25;
-
-    		    widthScale *=
-        		1 - 0.45 * k;
-
-		}
+                const widthScale =
+                    0.92 +
+                    Math.sin(t * Math.PI) * 0.33;
 
                 ctx.lineWidth =
                     CONFIG.BODY_RADIUS * 2 * widthScale;
@@ -188,43 +168,19 @@ export class Renderer {
             // 節
             ctx.fillStyle = CONFIG.COLORS.EEL;
 
-            for (let i = 2; i < drawPoints.length; i++) {
+            for (let i = 1; i < drawPoints.length; i++) {
 
                 ctx.beginPath();
 
-                // 後半ほど細くする
-		const t = (i - 1) / (drawPoints.length - 2);
-
-		let radius = CONFIG.BODY_RADIUS;
-
-		if (t > 0.75) {
-
-    		    const k = (t - 0.75) / 0.25;
-
-    		    radius =
-        		CONFIG.BODY_RADIUS * (1 - 0.45 * k);
-
-		}
-
-		ctx.arc(
-    		    drawPoints[i].x,
-    		    drawPoints[i].y,
-    		    radius,
-    		    0,
-    		    Math.PI * 2
-		);
+                ctx.arc(
+                    drawPoints[i].x,
+                    drawPoints[i].y,
+                    CONFIG.BODY_RADIUS,
+                    0,
+                    Math.PI * 2
+                );
 
                 ctx.fill();
-
-		ctx.fillStyle = "white";
-		ctx.font = "10px sans-serif";
-		ctx.fillText(
-    		    i,
-    		    drawPoints[i].x + 6,
-    		    drawPoints[i].y - 6
-		);
-
-		ctx.fillStyle = CONFIG.COLORS.EEL;
 
             }
 
