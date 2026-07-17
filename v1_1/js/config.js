@@ -12,7 +12,7 @@ export const CONFIG = {
     EEL_RADIUS: 8,
 
     // ニョロニョロ
-    BODY_COUNT: 12,
+    BODY_COUNT: 16,
     BODY_RADIUS: 7,
     BODY_DELAY: 4,
 
