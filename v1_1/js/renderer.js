@@ -172,13 +172,27 @@ export class Renderer {
 
                 ctx.beginPath();
 
-                ctx.arc(
-                    drawPoints[i].x,
-                    drawPoints[i].y,
-                    CONFIG.BODY_RADIUS,
-                    0,
-                    Math.PI * 2
-                );
+                // 後半ほど細くする
+		const t = (i - 1) / (drawPoints.length - 2);
+
+		let radius = CONFIG.BODY_RADIUS;
+
+		if (t > 0.75) {
+
+    		    const k = (t - 0.75) / 0.25;
+
+    		    radius =
+        		CONFIG.BODY_RADIUS * (1 - 0.45 * k);
+
+		}
+
+		ctx.arc(
+    		    drawPoints[i].x,
+    		    drawPoints[i].y,
+    		    radius,
+    		    0,
+    		    Math.PI * 2
+		);
 
                 ctx.fill();
 
