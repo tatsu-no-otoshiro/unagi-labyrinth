@@ -66,6 +66,13 @@ export class Renderer {
             }
             this.waveTime += 0.08;
 
+	    // drawPoints の構成
+	    // [0] 鼻先
+	    // [1] Head節
+	    // [2] body[0]
+	    // [3] body[1]
+	    // ...
+	    // [last] body[last]
             const drawPoints = [];
 
             // 中心線の先頭（鼻先）
@@ -133,8 +140,11 @@ export class Renderer {
                 const p0 = drawPoints[i];
                 const p1 = drawPoints[i - 1];
 
-                // 頭=0、尻尾=1 の割合
+                // 現在の計算（後で整理予定）
                 const t = 1 - (i - 1) / (drawPoints.length - 2);
+
+		// TODO:
+		// bodyIndex と tailRatio を使う形へ整理予定
 
                 // 首は少し細く、中央が最大、尻尾へ向かって細く
                 let widthScale =
@@ -205,6 +215,16 @@ export class Renderer {
 		);
 
                 ctx.fill();
+
+		ctx.fillStyle = "white";
+		ctx.font = "10px sans-serif";
+		ctx.fillText(
+    		    i,
+    		    drawPoints[i].x + 6,
+    		    drawPoints[i].y - 6
+		);
+
+		ctx.fillStyle = CONFIG.COLORS.EEL;
 
             }
 
