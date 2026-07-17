@@ -183,6 +183,15 @@ export class Renderer {
 
 		let radius = CONFIG.BODY_RADIUS;
 
+		// 最後の4節だけ少し細くする
+		if (t < 0.25) {
+
+    		    const k = t / 0.25;
+
+    		    radius *= 0.80 + 0.20 * k;
+
+		}
+
 		if (i >= tailStart) {
 
     		    radius -= (i - tailStart + 1) * 1.0;
