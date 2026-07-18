@@ -144,13 +144,14 @@ export class Renderer {
             ctx.lineCap = "round";
             ctx.lineJoin = "round";
 
-            for (let i = drawPoints.length - 1; i > 1; i--) {
+            for (let i = renderPoints.length - 1; i > 1; i--) {
 
-                const p0 = drawPoints[i];
-                const p1 = drawPoints[i - 1];
+                const p0 = renderPoints[i];
+		const p1 = renderPoints[i - 1];
 
                 // 尻尾=0、頭=1 の割合
-                const t = 1 - (i - 1) / (drawPoints.length - 2);
+                const t =
+    		    1 - (i - 1) / (renderPoints.length - 2);
 
                 // 首は少し細く、中央が最大、尻尾へ向かって細く
                 let widthScale =
