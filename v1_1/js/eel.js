@@ -128,12 +128,19 @@ export class Eel {
 
     	    const part = this.body[i];
 
+	    let partSpacing = spacing;
+
+	    // 最後の3節だけ少し間隔を縮める
+	    if (i >= this.body.length - 3) {
+    		partSpacing *= 0.9;
+	    }
+
             const vx = part.x - leader.x;
             const vy = part.y - leader.y;
 
             const d = Math.hypot(vx, vy);
 
-            if (d > spacing) {
+            if (d > partSpacing) {
 
                 const ratio = spacing / d;
 
