@@ -207,6 +207,11 @@ export class Renderer {
 	    const tail = drawPoints[drawPoints.length - 1];
 	    const prev = drawPoints[drawPoints.length - 2];
 
+	    const dx = tail.x - prev.x;
+	    const dy = tail.y - prev.y;
+
+	    const len = Math.hypot(dx, dy);
+
         }
 
         // --------------------
