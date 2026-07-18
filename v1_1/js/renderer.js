@@ -227,7 +227,7 @@ export class Renderer {
 		const tipLength = 16;
 
 		// 尾先の幅
-		const tipWidth = 3;
+		const tipWidth = 3.5;
 
 		ctx.beginPath();
 
