@@ -124,7 +124,9 @@ export class Eel {
         // body[0] は鼻先ではなく頭の後端を追従する
         let leader = this.head;
 
-        for (const part of this.body) {
+        for (let i = 0; i < this.body.length; i++) {
+
+    	    const part = this.body[i];
 
             const vx = part.x - leader.x;
             const vy = part.y - leader.y;
