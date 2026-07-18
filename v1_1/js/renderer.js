@@ -224,20 +224,17 @@ export class Renderer {
 		const py = ux;
 
 		// 尾先の長さ
-		const tipLength = 10;
+		const tipLength = 16;
 
 		// 尾先の幅
-		const tipWidth = 3;
-
-		// 尾の円周まで進める距離
-		const radius = CONFIG.BODY_RADIUS;
+		const tipWidth = 5;
 
 		ctx.beginPath();
 
 		// 左根元
 		ctx.moveTo(
-    		    tail.x + px * tipWidth + ux * radius,
-    		    tail.y + py * tipWidth + uy * radius
+    		    tail.x + px * tipWidth,
+    		    tail.y + py * tipWidth
 		);
 
 		// 尖った先端
@@ -248,8 +245,8 @@ export class Renderer {
 
 		// 右根元
 		ctx.lineTo(
-    		    tail.x - px * tipWidth + ux * radius,
-    		    tail.y - py * tipWidth + uy * radius
+    		    tail.x - px * tipWidth,
+    		    tail.y - py * tipWidth
 		);
 
 		ctx.closePath();
