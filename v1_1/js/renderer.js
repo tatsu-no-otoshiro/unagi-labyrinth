@@ -252,7 +252,7 @@ export class Renderer {
     drawTailTip(ctx, drawPoints) {
 
         const tail = drawPoints[drawPoints.length - 1];
-        const prev = drawPoints[drawPoints.length - 3];
+        const prev = drawPoints[drawPoints.length - 2];
 
         const dx = tail.x - prev.x;
         const dy = tail.y - prev.y;
