@@ -137,34 +137,6 @@ export class Renderer {
             // 節
 	    this.drawBodySegments(ctx, drawPoints);
 
-            ctx.fillStyle = CONFIG.COLORS.EEL;
-
-            for (let i = 1; i < drawPoints.length; i++) {
-
-		const tailStart = drawPoints.length - 4;
-
-		let radius = CONFIG.BODY_RADIUS;
-
-		if (i >= tailStart) {
-
-    		    radius -= (i - tailStart + 1) * 1.0;
-
-		}
-
-                ctx.beginPath();
-
-                ctx.arc(
-                    drawPoints[i].x,
-                    drawPoints[i].y,
-                    radius,
-                    0,
-                    Math.PI * 2
-                );
-
-                ctx.fill();
-
-            }
-
 	    // 尾端
 	    this.drawTailTip(ctx, drawPoints);
 
@@ -271,6 +243,34 @@ export class Renderer {
     }
 
     drawBodySegments(ctx, drawPoints) {
+
+	ctx.fillStyle = CONFIG.COLORS.EEL;
+
+        for (let i = 1; i < drawPoints.length; i++) {
+
+	    const tailStart = drawPoints.length - 4;
+
+	    let radius = CONFIG.BODY_RADIUS;
+
+	    if (i >= tailStart) {
+
+    		radius -= (i - tailStart + 1) * 1.0;
+
+	    }
+
+            ctx.beginPath();
+
+            ctx.arc(
+                drawPoints[i].x,
+                drawPoints[i].y,
+                radius,
+                0,
+                Math.PI * 2
+            );
+
+            ctx.fill();
+
+        }
 
     }
 
