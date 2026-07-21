@@ -135,6 +135,8 @@ export class Renderer {
 	    this.drawBodyLine(ctx, drawPoints);
 
             // 節
+	    this.drawBodySegments(ctx, drawPoints);
+
             ctx.fillStyle = CONFIG.COLORS.EEL;
 
             for (let i = 1; i < drawPoints.length; i++) {
@@ -265,6 +267,10 @@ export class Renderer {
             ctx.stroke();
 
         }
+
+    }
+
+    drawBodySegments(ctx, drawPoints) {
 
     }
 
