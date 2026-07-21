@@ -262,6 +262,11 @@ export class Renderer {
 
     }
 
+    /**
+     * ウナギの尾端を描画する
+     * @param {CanvasRenderingContext2D} ctx
+     * @param {Array} drawPoints
+     */
     drawTailTip(ctx, drawPoints) {
 
         const tail = drawPoints[drawPoints.length - 1];
