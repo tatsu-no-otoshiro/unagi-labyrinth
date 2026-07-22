@@ -21,6 +21,10 @@ export const CONFIG = {
     TAIL_CURVE_FORWARD: 8,
     TAIL_CURVE_WIDTH: 4,
 
+    // 尾先の向き補正
+    TAIL_DIRECTION_CURRENT: 0.7,
+    TAIL_DIRECTION_PREVIOUS: 0.3,
+
     BODY_DELAY: 4,
 
     // ゴール
