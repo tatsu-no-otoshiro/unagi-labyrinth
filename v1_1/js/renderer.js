@@ -372,7 +372,27 @@ export class Renderer {
      */
     }
     drawPectoralFins(ctx, eel) {
+	// 頭の中心
+	const headCenterX = (eel.x + eel.head.x) * 0.5;
+	const headCenterY = (eel.y + eel.head.y) * 0.5;
 
+	// 頭の向き
+	const angle = eel.angle;
+
+	// 前方向
+	const ux = Math.cos(angle);
+	const uy = Math.sin(angle);
+
+	// 左右方向
+	const px = -uy;
+	const py = ux;
+
+	// 胸びれの付け根
+	const finX =
+    	    headCenterX - ux * (CONFIG.BODY_RADIUS * 0.8);
+
+	const finY =
+    	    headCenterY - uy * (CONFIG.BODY_RADIUS * 0.8);
     }
 
     /**
