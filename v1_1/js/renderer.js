@@ -415,7 +415,7 @@ export class Renderer {
 	const rightFinX = base.x - px * 2;
 	const rightFinY = base.y - py * 2;
 
-	ctx.fillStyle = CONFIG.COLORS.EEL;
+	ctx.fillStyle = CONFIG.COLORS.FIN;
 
 
 	// ===== 左胸びれ =====
