@@ -406,14 +406,14 @@ export class Renderer {
 
 	// 後ろ側
 	ctx.lineTo(
-    	    finX - ux * 4 + px * 4,
-    	    finY - uy * 4 + py * 4
+    	    finX - ux * 6 + px * 8,
+    	    finY - uy * 6 + py * 8
 	);
 
 	// 外側
 	ctx.lineTo(
-    	    finX + px * 10,
-    	    finY + py * 10
+    	    finX + px * 16,
+    	    finY + py * 16
 	);
 
 	ctx.closePath();
