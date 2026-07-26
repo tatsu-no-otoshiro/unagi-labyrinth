@@ -143,7 +143,7 @@ export class Renderer {
         }
 
 	// 胸びれ
-	this.drawPectoralFins(ctx, eel);
+	this.drawPectoralFins(ctx, drawPoints);
         
         // 頭
         this.drawHead(ctx, eel);
@@ -371,28 +371,31 @@ export class Renderer {
      * @param {CanvasRenderingContext2D} ctx
      * @param {Array} drawPoints
      */
-    drawPectoralFins(ctx, eel) {
-	// 頭の中心
-	const headCenterX = (eel.x + eel.head.x) * 0.5;
-	const headCenterY = (eel.y + eel.head.y) * 0.5;
+    drawPectoralFins(ctx, drawPoints) {
 
-	// 頭の向き
-	const angle = eel.angle;
+	if (drawPoints.length < 4) return;
+	
+	// 胸びれの付け根（最初の胴体）
+	const base = drawPoints[2];
 
-	// 前方向
-	const ux = Math.cos(angle);
-	const uy = Math.sin(angle);
+	// 次の節
+	const next = drawPoints[3];
 
-	// 左右方向
+	const dx = next.x - base.x;
+	const dy = next.y - base.y;
+
+	const len = Math.hypot(dx, dy);
+
+	if (len < 0.001) return;
+
+	const ux = dx / len;
+	const uy = dy / len;
+
 	const px = -uy;
 	const py = ux;
 
-	// 胸びれの付け根
-	const finX =
-    	    headCenterX - ux * (CONFIG.BODY_RADIUS * 3.5);
-
-	const finY =
-    	    headCenterY - uy * (CONFIG.BODY_RADIUS * 3.5);
+	const finX = base.x;
+	const finY = base.y;
 
 	ctx.fillStyle = CONFIG.COLORS.EEL;
 
