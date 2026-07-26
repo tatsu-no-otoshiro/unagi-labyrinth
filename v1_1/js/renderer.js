@@ -141,7 +141,7 @@ export class Renderer {
 	    this.drawTailTip(ctx, drawPoints);
 
 	    // 胸びれ
-	    
+	    this.drawPectoralFins(ctx, drawPoints);
 
         }
 
