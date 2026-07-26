@@ -510,25 +510,30 @@ export class Renderer {
 
         ctx.fill();
 
-	// ===== 目 =====
+	// ===== 左右の目 =====
 
 	ctx.fillStyle = "#111";
 
+	// 左目
 	ctx.beginPath();
-
 	ctx.arc(
-
-    	    headWidth * 0.35,      // 少し前
-    	    -headHeight * 0.22,    // 少し上
-
+    	    headWidth * 0.32,
+    	    -headHeight * 0.28,
     	    CONFIG.EYE_RADIUS,
-
     	    0,
-
     	    Math.PI * 2
-
 	);
+	ctx.fill();
 
+	// 右目
+	ctx.beginPath();
+	ctx.arc(
+    	    headWidth * 0.32,
+    	    headHeight * 0.28,
+    	    CONFIG.EYE_RADIUS,
+    	    0,
+    	    Math.PI * 2
+	);
 	ctx.fill();
 
         ctx.restore();
