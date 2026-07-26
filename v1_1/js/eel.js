@@ -58,8 +58,8 @@ export class Eel {
         for (let i = 0; i < CONFIG.BODY_COUNT; i++) {
 
             this.body.push({
-    		x: this.headBackX - spacing * (i + 1),
-    		y: this.headBackY
+    		x: this.x - spacing * (i + 1),
+    		y: this.y
 	    });
 
         }
