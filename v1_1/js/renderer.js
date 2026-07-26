@@ -414,21 +414,39 @@ export class Renderer {
 
 	ctx.fillStyle = CONFIG.COLORS.EEL;
 
+
+	// ===== 左胸びれ =====
 	ctx.beginPath();
 
-	// 付け根
 	ctx.moveTo(finX, finY);
 
-	// 後ろ側
 	ctx.lineTo(
     	    finX - ux * 6 + px * 8,
     	    finY - uy * 6 + py * 8
 	);
 
-	// 外側
 	ctx.lineTo(
-    	    finX + px * 16,
+   	    finX + px * 16,
     	    finY + py * 16
+	);
+
+	ctx.closePath();
+	ctx.fill();
+
+
+	// ===== 右胸びれ =====
+	ctx.beginPath();
+
+	ctx.moveTo(finX, finY);
+
+	ctx.lineTo(
+    	    finX - ux * 6 - px * 8,
+    	    finY - uy * 6 - py * 8
+	);
+
+	ctx.lineTo(
+    	    finX - px * 16,
+    	    finY - py * 16
 	);
 
 	ctx.closePath();
