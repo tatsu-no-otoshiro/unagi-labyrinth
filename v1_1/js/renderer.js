@@ -401,16 +401,16 @@ export class Renderer {
 	// 付け根
 	ctx.moveTo(finX, finY);
 
-	// 上側
+	// 後ろ側
 	ctx.lineTo(
-    	    finX + px * 6 - ux * 2,
-    	    finY + py * 6 - uy * 2
+    	    finX - ux * 4 + px * 4,
+    	    finY - uy * 4 + py * 4
 	);
 
-	// 先端
+	// 外側
 	ctx.lineTo(
-    	    finX + px * 10 - ux * 5,
-    	    finY + py * 10 - uy * 5
+    	    finX + px * 10,
+    	    finY + py * 10
 	);
 
 	ctx.closePath();
