@@ -38,7 +38,8 @@ export class Eel {
 
         this.angle = 0;
 
-        const headLength = 0;
+        const headLength =
+    	    this.game.maze.tileSize * 0.55;
 
         this.headBackX = this.x - headLength;
         this.headBackY = this.y;
