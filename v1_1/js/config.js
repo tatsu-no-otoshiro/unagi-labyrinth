@@ -38,7 +38,8 @@ export const CONFIG = {
         BACKGROUND: "#9ed8ff",
         WALL: "#355",
         GOAL: "gold",
-        EEL: "#643"
+        EEL: "#643",
+        FIN: "#765"
     }
 
 };
