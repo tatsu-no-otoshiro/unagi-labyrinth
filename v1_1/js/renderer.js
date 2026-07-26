@@ -389,7 +389,7 @@ export class Renderer {
 
 	// 胸びれの付け根
 	const finX =
-    	    headCenterX - ux * (CONFIG.BODY_RADIUS * 0.8);
+    	    headCenterX - ux * (CONFIG.BODY_RADIUS * 2.5);
 
 	const finY =
     	    headCenterY - uy * (CONFIG.BODY_RADIUS * 0.8);
