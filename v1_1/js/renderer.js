@@ -409,8 +409,8 @@ export class Renderer {
 	const py = ux;
 
 	// 胸びれの付け根
-	const finX = base.x;
-	const finY = base.y;
+	const finX = base.x + px * 2;
+	const finY = base.y + py * 2;
 
 	ctx.fillStyle = CONFIG.COLORS.EEL;
 
