@@ -424,14 +424,14 @@ export class Renderer {
 	ctx.moveTo(leftFinX, leftFinY);
 
 	ctx.lineTo(
-    	    leftFinX - ux * 6 + px * 8,
-    	    leftFinY - uy * 6 + py * 8
+    	    leftFinX - ux * 7 + px * 9,
+    	    leftFinY - uy * 7 + py * 9
 	);
 
 	ctx.quadraticCurveTo(
 
-    	    leftFinX + px * 12 - ux * 2,
-    	    leftFinY + py * 12 - uy * 2,
+    	    leftFinX + px * 14 - ux * 2,
+    	    leftFinY + py * 14 - uy * 2,
 
     	    leftFinX,
     	    leftFinY
@@ -448,14 +448,14 @@ export class Renderer {
 	ctx.moveTo(rightFinX, rightFinY);
 
 	ctx.lineTo(
-    	    rightFinX - ux * 6 - px * 8,
-    	    rightFinY - uy * 6 - py * 8
+    	    rightFinX - ux * 7 - px * 9,
+    	    rightFinY - uy * 7 - py * 9
 	);
 
 	ctx.quadraticCurveTo(
 
-    	    rightFinX - px * 12 - ux * 2,
-    	    rightFinY - py * 12 - uy * 2,
+    	    rightFinX - px * 14 - ux * 2,
+    	    rightFinY - py * 14 - uy * 2,
 
     	    rightFinX,
     	    rightFinY
