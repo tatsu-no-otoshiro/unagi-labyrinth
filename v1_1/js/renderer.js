@@ -381,19 +381,34 @@ export class Renderer {
 	// 次の節
 	const next = drawPoints[3];
 
-	const dx = next.x - base.x;
-	const dy = next.y - base.y;
+	// 頭の向き
+	const headUx = Math.cos(this.game.eel.angle);
+	const headUy = Math.sin(this.game.eel.angle);
 
-	const len = Math.hypot(dx, dy);
+	// 胴体の向き
+	const bodyDx = next.x - base.x;
+	const bodyDy = next.y - base.y;
 
-	if (len < 0.001) return;
+	const bodyLen = Math.hypot(bodyDx, bodyDy);
 
-	const ux = dx / len;
-	const uy = dy / len;
+	if (bodyLen < 0.001) return;
+
+	const bodyUx = bodyDx / bodyLen;
+	const bodyUy = bodyDy / bodyLen;
+
+	// 頭70%＋胴体30%
+	let ux = headUx * 0.7 + bodyUx * 0.3;
+	let uy = headUy * 0.7 + bodyUy * 0.3;
+
+	const len = Math.hypot(ux, uy);
+
+	ux /= len;
+	uy /= len;
 
 	const px = -uy;
 	const py = ux;
 
+	// 胸びれの付け根
 	const finX = base.x;
 	const finY = base.y;
 
