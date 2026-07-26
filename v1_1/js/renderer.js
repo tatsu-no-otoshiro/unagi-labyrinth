@@ -393,6 +393,28 @@ export class Renderer {
 
 	const finY =
     	    headCenterY - uy * (CONFIG.BODY_RADIUS * 0.8);
+
+	ctx.fillStyle = CONFIG.COLORS.EEL;
+
+	ctx.beginPath();
+
+	// 付け根
+	ctx.moveTo(finX, finY);
+
+	// 上側
+	ctx.lineTo(
+    	    finX + px * 6 - ux * 2,
+    	    finY + py * 6 - uy * 2
+	);
+
+	// 先端
+	ctx.lineTo(
+    	    finX + px * 10 - ux * 5,
+    	    finY + py * 10 - uy * 5
+	);
+
+	ctx.closePath();
+	ctx.fill();
     }
 
     /**
