@@ -517,8 +517,8 @@ export class Renderer {
 	// 左目
 	ctx.beginPath();
 	ctx.arc(
-    	    headWidth * 0.32,
-    	    -headHeight * 0.28,
+    	    headWidth * 0.42,
+    	    -headHeight * 0.45,
     	    CONFIG.EYE_RADIUS,
     	    0,
     	    Math.PI * 2
@@ -528,8 +528,8 @@ export class Renderer {
 	// 右目
 	ctx.beginPath();
 	ctx.arc(
-    	    headWidth * 0.32,
-    	    headHeight * 0.28,
+    	    headWidth * 0.42,
+    	    headHeight * 0.45,
     	    CONFIG.EYE_RADIUS,
     	    0,
     	    Math.PI * 2
