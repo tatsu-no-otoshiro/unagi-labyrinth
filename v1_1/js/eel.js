@@ -64,6 +64,17 @@ export class Eel {
 
         }
 
+	// body[0] だけ頭から一定距離へ配置
+	if (this.body.length > 0) {
+
+    	    this.body[0].x =
+        	this.head.x - spacing;
+
+    	    this.body[0].y =
+        	this.head.y;
+
+	}
+
     }
 
     update() {
