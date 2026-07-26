@@ -408,9 +408,12 @@ export class Renderer {
 	const px = -uy;
 	const py = ux;
 
-	// 胸びれの付け根
-	const finX = base.x + px * 2;
-	const finY = base.y + py * 2;
+	// 左右の付け根
+	const leftFinX  = base.x + px * 2;
+	const leftFinY  = base.y + py * 2;
+
+	const rightFinX = base.x - px * 2;
+	const rightFinY = base.y - py * 2;
 
 	ctx.fillStyle = CONFIG.COLORS.EEL;
 
@@ -418,16 +421,16 @@ export class Renderer {
 	// ===== 左胸びれ =====
 	ctx.beginPath();
 
-	ctx.moveTo(finX, finY);
+	ctx.moveTo(leftFinX, leftFinY);
 
 	ctx.lineTo(
-    	    finX - ux * 6 + px * 8,
-    	    finY - uy * 6 + py * 8
+    	    leftFinX - ux * 6 + px * 8,
+    	    leftFinY - uy * 6 + py * 8
 	);
 
 	ctx.lineTo(
-   	    finX + px * 16,
-    	    finY + py * 16
+   	    leftFinX + px * 16,
+    	    leftFinY + py * 16
 	);
 
 	ctx.closePath();
@@ -437,16 +440,16 @@ export class Renderer {
 	// ===== 右胸びれ =====
 	ctx.beginPath();
 
-	ctx.moveTo(finX, finY);
+	ctx.moveTo(rightFinX, rightFinY);
 
 	ctx.lineTo(
-    	    finX - ux * 6 - px * 8,
-    	    finY - uy * 6 - py * 8
+    	    rightFinX - ux * 6 - px * 8,
+    	    rightFinY - uy * 6 - py * 8
 	);
 
 	ctx.lineTo(
-    	    finX - px * 16,
-    	    finY - py * 16
+    	    rightFinX - px * 16,
+    	    rightFinY - py * 16
 	);
 
 	ctx.closePath();
