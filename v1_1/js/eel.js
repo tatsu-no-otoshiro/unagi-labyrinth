@@ -57,21 +57,16 @@ export class Eel {
 
         for (let i = 0; i < CONFIG.BODY_COUNT; i++) {
 
-            this.body.push({
-    		x: this.x - spacing * (i + 1),
-    		y: this.y
-	    });
+    	    this.body.push({
 
-        }
+        	x:
+            	    this.head.x -
+            	    spacing * (i + 1),
 
-	// body[0] だけ頭から一定距離へ配置
-	if (this.body.length > 0) {
+        	y:
+            	    this.head.y
 
-    	    this.body[0].x =
-        	this.head.x - spacing;
-
-    	    this.body[0].y =
-        	this.head.y;
+    	    });
 
 	}
 
