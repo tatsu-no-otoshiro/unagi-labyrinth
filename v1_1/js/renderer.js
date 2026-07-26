@@ -142,6 +142,8 @@ export class Renderer {
 
         }
 
+	// 胸びれ
+	this.drawPectoralFins(ctx, eel);
         
         // 頭
         this.drawHead(ctx, eel);
@@ -362,6 +364,14 @@ export class Renderer {
 	    ctx.fill();
 
         }
+
+    /**
+     * ウナギの胸びれを描画する
+     * @param {CanvasRenderingContext2D} ctx
+     * @param {Array} drawPoints
+     */
+    }
+    drawPectoralFins(ctx, eel) {
 
     }
 
