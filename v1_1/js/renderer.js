@@ -392,7 +392,7 @@ export class Renderer {
     	    headCenterX - ux * (CONFIG.BODY_RADIUS * 2.5);
 
 	const finY =
-    	    headCenterY - uy * (CONFIG.BODY_RADIUS * 0.8);
+    	    headCenterY - uy * (CONFIG.BODY_RADIUS * 2.5);
 
 	ctx.fillStyle = CONFIG.COLORS.EEL;
 
