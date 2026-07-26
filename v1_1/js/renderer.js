@@ -448,14 +448,14 @@ export class Renderer {
 	ctx.moveTo(rightFinX, rightFinY);
 
 	ctx.lineTo(
-    	    rightFinX - ux * 8 - px * 10,
-    	    rightFinY - uy * 8 - py * 10
+    	    rightFinX - ux * 9 - px * 11,
+    	    rightFinY - uy * 9 - py * 11
 	);
 
 	ctx.quadraticCurveTo(
 
-    	    rightFinX - px * 16 - ux * 2,
-    	    rightFinY - py * 16 - uy * 2,
+    	    rightFinX - px * 18 - ux * 2,
+    	    rightFinY - py * 18 - uy * 2,
 
     	    rightFinX,
     	    rightFinY
