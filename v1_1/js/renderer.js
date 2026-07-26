@@ -510,6 +510,27 @@ export class Renderer {
 
         ctx.fill();
 
+	// ===== 目 =====
+
+	ctx.fillStyle = "#111";
+
+	ctx.beginPath();
+
+	ctx.arc(
+
+    	    headWidth * 0.35,      // 少し前
+    	    -headHeight * 0.22,    // 少し上
+
+    	    CONFIG.EYE_RADIUS,
+
+    	    0,
+
+    	    Math.PI * 2
+
+	);
+
+	ctx.fill();
+
         ctx.restore();
     }
 
