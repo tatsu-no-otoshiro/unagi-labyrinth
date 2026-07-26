@@ -148,6 +148,13 @@ export class Eel {
 
         }
 
+	console.log(
+    	    Math.hypot(
+        	this.body[0].x - this.head.x,
+        	this.body[0].y - this.head.y
+    	    )
+	);
+
     }
 
     hitWall() {
