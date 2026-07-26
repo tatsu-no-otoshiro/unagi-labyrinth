@@ -27,6 +27,9 @@ export const CONFIG = {
 
     BODY_DELAY: 4,
 
+    // 頭
+    HEAD_LENGTH_RATIO: 0.55,
+
     // ゴール
     GOAL_RADIUS: 10,
 
