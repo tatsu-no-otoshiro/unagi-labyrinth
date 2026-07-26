@@ -140,11 +140,11 @@ export class Renderer {
 	    // 尾端
 	    this.drawTailTip(ctx, drawPoints);
 
+	    // 胸びれ
+	    this.drawPectoralFins(ctx, drawPoints);
+
         }
 
-	// 胸びれ
-	this.drawPectoralFins(ctx, drawPoints);
-        
         // 頭
         this.drawHead(ctx, eel);
 
