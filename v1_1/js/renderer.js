@@ -389,10 +389,10 @@ export class Renderer {
 
 	// 胸びれの付け根
 	const finX =
-    	    headCenterX - ux * (CONFIG.BODY_RADIUS * 2.5);
+    	    headCenterX - ux * (CONFIG.BODY_RADIUS * 3.5);
 
 	const finY =
-    	    headCenterY - uy * (CONFIG.BODY_RADIUS * 2.5);
+    	    headCenterY - uy * (CONFIG.BODY_RADIUS * 3.5);
 
 	ctx.fillStyle = CONFIG.COLORS.EEL;
 
