@@ -15,7 +15,7 @@ export const CONFIG = {
     BODY_COUNT: 16,
     BODY_RADIUS: 7,
 
-    EYE_RADIUS: 1.8,
+    EYE_RADIUS: 1.3,
 
     TAIL_TIP_LENGTH: 14,
     TAIL_TIP_WIDTH: 3,
