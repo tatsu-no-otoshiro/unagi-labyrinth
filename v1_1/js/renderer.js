@@ -364,13 +364,13 @@ export class Renderer {
 	    ctx.fill();
 
         }
+    }
 
     /**
      * ウナギの胸びれを描画する
      * @param {CanvasRenderingContext2D} ctx
      * @param {Array} drawPoints
      */
-    }
     drawPectoralFins(ctx, eel) {
 	// 頭の中心
 	const headCenterX = (eel.x + eel.head.x) * 0.5;
