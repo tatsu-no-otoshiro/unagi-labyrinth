@@ -39,7 +39,7 @@ export class Eel {
         this.angle = 0;
 
         const headLength =
-    	    this.game.maze.tileSize * 0.55;
+    	    this.game.maze.tileSize * CONFIG.HEAD_LENGTH_RATIO;
 
         this.headBackX = this.x - headLength;
         this.headBackY = this.y;
@@ -58,9 +58,9 @@ export class Eel {
         for (let i = 0; i < CONFIG.BODY_COUNT; i++) {
 
             this.body.push({
-                x: this.x - spacing * (i + 1),
-                y: this.y
-            });
+    		x: this.headBackX - spacing * (i + 1),
+    		y: this.headBackY
+	    });
 
         }
 
@@ -99,7 +99,7 @@ export class Eel {
 
         // 頭の後端座標
         const headLength =
-            this.game.maze.tileSize * 0.55;
+            this.game.maze.tileSize * CONFIG.HEAD_LENGTH_RATIO;
 
         this.headBackX =
             this.x -
