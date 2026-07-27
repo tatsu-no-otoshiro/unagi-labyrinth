@@ -376,10 +376,10 @@ export class Renderer {
 	if (drawPoints.length < 4) return;
 	
 	// 胸びれの付け根（最初の胴体）
-	const base = drawPoints[1];
+	const base = drawPoints[2];
 
 	// 次の節
-	const next = drawPoints[2];
+	const next = drawPoints[3];
 
 	// 頭の向き
 	const headUx = Math.cos(this.game.eel.angle);
