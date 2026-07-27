@@ -512,7 +512,7 @@ export class Renderer {
 
 	// ===== 左右の目 =====
 
-	ctx.fillStyle = "#2b261d";
+	ctx.fillStyle = "#111";
 
 	// 左目
 	ctx.beginPath();
