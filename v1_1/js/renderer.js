@@ -382,8 +382,8 @@ export class Renderer {
 	const next = drawPoints[2];
 
 	// 胴体の向き
-	const bodyDx = next.x - base.x;
-	const bodyDy = next.y - base.y;
+	const bodyDx = base.x - next.x;
+	const bodyDy = base.y - next.y;
 
 	const bodyLen = Math.hypot(bodyDx, bodyDy);
 
