@@ -131,9 +131,6 @@ export class Renderer {
 	    // 描画
 	    // --------------------
 
-            // 胸びれ
-	    this.drawPectoralFins(ctx, drawPoints);
-
             // 一本線
 	    this.drawBodyLine(ctx, drawPoints);
 
@@ -142,6 +139,9 @@ export class Renderer {
 
 	    // 尾端
 	    this.drawTailTip(ctx, drawPoints);
+
+			// 胸びれ
+	    this.drawPectoralFins(ctx, drawPoints);
 
         }
 
