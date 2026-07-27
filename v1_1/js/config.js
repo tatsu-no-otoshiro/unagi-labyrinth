@@ -17,7 +17,7 @@ export const CONFIG = {
 
     EYE_RADIUS: 1.3,
 
-    TAIL_TIP_LENGTH: 14,
+    TAIL_TIP_LENGTH: 12,
     TAIL_TIP_WIDTH: 3,
 
     TAIL_CURVE_FORWARD: 8,
