@@ -262,13 +262,17 @@ export class Renderer {
     drawTailTip(ctx, drawPoints) {
 
         const tail = drawPoints[drawPoints.length - 1];
-
 	const prev1 = drawPoints[drawPoints.length - 2];
+
+	// 尾先の基準点を少し内側へ戻す
+	const baseX = tail.x * 0.75 + prev1.x * 0.25;
+	const baseY = tail.y * 0.75 + prev1.y * 0.25;
+
 	const prev2 = drawPoints[drawPoints.length - 3];
 
         // 最後の2本のベクトル
-	const dx1 = tail.x - prev1.x;
-	const dy1 = tail.y - prev1.y;
+	const dx1 = baseX - prev1.x;
+	const dy1 = baseY - prev1.y;
 
 	const dx2 = prev1.x - prev2.x;
 	const dy2 = prev1.y - prev2.y;
@@ -320,20 +324,20 @@ export class Renderer {
 
             // 左根元
             ctx.moveTo(
-                tail.x + px * tipWidth,
-                tail.y + py * tipWidth
+                baseX + px * tipWidth,
+                baseY + py * tipWidth
             );
 
             // 尖った先端
             ctx.lineTo(
-                tail.x + ux * tipLength,
-                tail.y + uy * tipLength
+                baseX + ux * tipLength,
+                baseY + uy * tipLength
             );
 
             // 右根元
             ctx.lineTo(
-                tail.x - px * tipWidth,
-                tail.y - py * tipWidth
+                baseX - px * tipWidth,
+                baseY - py * tipWidth
             );
 
             ctx.closePath();
@@ -348,24 +352,24 @@ export class Renderer {
 
 	    // 左根元
 	    ctx.moveTo(
-    	        tail.x + px * tipWidth,
-    	        tail.y + py * tipWidth
+    	        baseX + px * tipWidth,
+    	        baseY + py * tipWidth
 	    );
 
 	    // 左側の曲線
 	    ctx.quadraticCurveTo(
-    		tail.x + ux * curveForward + px * curveWidth,
-    		tail.y + uy * curveForward + py * curveWidth,
-    		tail.x + ux * tipLength,
-    		tail.y + uy * tipLength
+    		baseX + ux * curveForward + px * curveWidth,
+    		baseY + uy * curveForward + py * curveWidth,
+    		baseX + ux * tipLength,
+    		baseY + uy * tipLength
 	    );
 
 	    // 右側の曲線
 	    ctx.quadraticCurveTo(
-    		tail.x + ux * curveForward - px * curveWidth,
-    		tail.y + uy * curveForward - py * curveWidth,
-    		tail.x - px * tipWidth,
-    		tail.y - py * tipWidth
+    		baseX + ux * curveForward - px * curveWidth,
+    		baseY + uy * curveForward - py * curveWidth,
+    		baseX - px * tipWidth,
+    		baseY - py * tipWidth
 	    );
 
 	    ctx.closePath();
