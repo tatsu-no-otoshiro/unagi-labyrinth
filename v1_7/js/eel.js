@@ -171,12 +171,12 @@ export class Eel {
     		const dist = Math.hypot(dxw, dyw);
 
     		// 少しだけ余裕を残す
-    		const limit = this.radius * 0.55;
+    		const limit = this.radius * 0.45;
 
     		if (dist > 0 && dist < limit) {
 
         	    // 押し戻し量を弱くする
-		    const push = (limit - dist) * 0.35;
+		    const push = (limit - dist) * 0.15;
 
 		    part.x += dxw / dist * push;
 		    part.y += dyw / dist * push;
