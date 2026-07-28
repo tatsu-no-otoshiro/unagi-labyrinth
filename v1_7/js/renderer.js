@@ -277,22 +277,42 @@ export class Renderer {
 	const dx2 = prev1.x - prev2.x;
 	const dy2 = prev1.y - prev2.y;
 
-	// ひとつ前の節を強めに見る
-	let dx = dx1 * 0.35 + dx2 * 0.65;
-	let dy = dy1 * 0.35 + dy2 * 0.65;
+	// 基本方向（平均）
+	let dx = dx1 + dx2;
+	let dy = dy1 + dy2;
 
+	// 正規化
 	let len = Math.hypot(dx, dy);
 
 	if (len > 0.001) {
 
-    	    const ux = dx / len;
-    	    const uy = dy / len;
+    	    dx /= len;
+    	    dy /= len;
 
-    	    ctx.fillStyle = CONFIG.COLORS.EEL;
+    	    // 曲がり方向
+    	    const cross = dx1 * dy2 - dy1 * dx2;
 
-    	    // 方向ベクトルに対して垂直方向
-    	    const px = -uy;
-    	    const py = ux;
+    	    // 曲がりが十分ある時だけ補正
+    	    if (Math.abs(cross) > 1.0) {
+
+        	// 極小補正
+        	const bend = Math.sign(cross) * 0.035;
+
+        	const rx = -dy;
+        	const ry = dx;
+
+        	// 以前と逆向きに回す
+        	dx -= rx * bend;
+        	dy -= ry * bend;
+
+        	// 再正規化
+        	len = Math.hypot(dx, dy);
+        	dx /= len;
+        	dy /= len;
+    	    }
+
+    	    const ux = dx;
+    	    const uy = dy;
 
             // 尾先の長さ
             const tipLength = CONFIG.TAIL_TIP_LENGTH;
