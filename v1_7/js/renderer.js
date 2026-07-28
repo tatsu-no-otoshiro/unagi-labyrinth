@@ -314,6 +314,10 @@ export class Renderer {
     	    const ux = dx;
     	    const uy = dy;
 
+	    // 方向ベクトルに対して垂直方向
+	    const px = -uy;
+	    const py = ux;
+
             // 尾先の長さ
             const tipLength = CONFIG.TAIL_TIP_LENGTH;
 
