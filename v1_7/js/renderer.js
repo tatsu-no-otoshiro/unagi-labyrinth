@@ -277,9 +277,9 @@ export class Renderer {
 	const dx2 = prev1.x - prev2.x;
 	const dy2 = prev1.y - prev2.y;
 
-	// 最後の2節の平均方向
-	let dx = dx1 + dx2;
-	let dy = dy1 + dy2;
+	// ひとつ前の節を強めに見る
+	let dx = dx1 * 0.35 + dx2 * 0.65;
+	let dy = dy1 * 0.35 + dy2 * 0.65;
 
 	let len = Math.hypot(dx, dy);
 
