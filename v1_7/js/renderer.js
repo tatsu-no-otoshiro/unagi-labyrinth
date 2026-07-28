@@ -293,8 +293,9 @@ export class Renderer {
     	    dy1 * currentWeight +
     	    dy2 * previousWeight;
 
-	// 曲がり方向（外積）
-	const bend = dx1 * dy2 - dy1 * dx2;
+	// 曲がり方向（符号だけ使う）
+	const cross = dx1 * dy2 - dy1 * dx2;
+	const bendSign = Math.sign(cross);
 
 	// 正規化
 	let len = Math.hypot(dx, dy);
@@ -302,17 +303,16 @@ export class Renderer {
 	if (len > 0.001) {
 
     	    dx /= len;
-   	    dy /= len;
+    	    dy /= len;
 
-    	    // 内側へ少し回す
-    	    const bendStrength = 0.28;
+    	    // 内側へほんの少し回す
+    	    const bendStrength = 0.08;
 
-   	    // 一時的な垂直ベクトル
     	    const rx = -dy;
     	    const ry = dx;
 
-    	    dx += rx * bend * bendStrength;
-    	    dy += ry * bend * bendStrength;
+    	    dx += rx * bendSign * bendStrength;
+    	    dy += ry * bendSign * bendStrength;
 
     	    // 再正規化
     	    len = Math.hypot(dx, dy);
