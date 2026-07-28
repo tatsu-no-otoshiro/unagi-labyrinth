@@ -302,16 +302,17 @@ export class Renderer {
 	if (len > 0.001) {
 
     	    dx /= len;
-    	    dy /= len;
+   	    dy /= len;
 
     	    // 内側へ少し回す
     	    const bendStrength = 0.28;
 
-    	    const px = -dy;
-    	    const py = dx;
+   	    // 一時的な垂直ベクトル
+    	    const rx = -dy;
+    	    const ry = dx;
 
-    	    dx += px * bend * bendStrength;
-    	    dy += py * bend * bendStrength;
+    	    dx += rx * bend * bendStrength;
+    	    dy += ry * bend * bendStrength;
 
     	    // 再正規化
     	    len = Math.hypot(dx, dy);
@@ -319,11 +320,11 @@ export class Renderer {
     	    const ux = dx / len;
     	    const uy = dy / len;
 
-            ctx.fillStyle = CONFIG.COLORS.EEL;
+    	    ctx.fillStyle = CONFIG.COLORS.EEL;
 
-            // 方向ベクトルに対して垂直方向
-            const px = -uy;
-            const py = ux;
+    	    // 方向ベクトルに対して垂直方向
+    	    const px = -uy;
+    	    const py = ux;
 
             // 尾先の長さ
             const tipLength = CONFIG.TAIL_TIP_LENGTH;
