@@ -284,20 +284,40 @@ export class Renderer {
 	const previousWeight =
     	    CONFIG.TAIL_DIRECTION_PREVIOUS;
 
-	const dx =
+	// 基本方向
+	let dx =
     	    dx1 * currentWeight +
     	    dx2 * previousWeight;
 
-	const dy =
+	let dy =
     	    dy1 * currentWeight +
     	    dy2 * previousWeight;
 
-        const len = Math.hypot(dx, dy);
+	// 曲がり方向（外積）
+	const bend = dx1 * dy2 - dy1 * dx2;
 
-        if (len > 0.001) {
+	// 正規化
+	let len = Math.hypot(dx, dy);
 
-            const ux = dx / len;
-            const uy = dy / len;
+	if (len > 0.001) {
+
+    	    dx /= len;
+    	    dy /= len;
+
+    	    // 内側へ少し回す
+    	    const bendStrength = 0.28;
+
+    	    const px = -dy;
+    	    const py = dx;
+
+    	    dx += px * bend * bendStrength;
+    	    dy += py * bend * bendStrength;
+
+    	    // 再正規化
+    	    len = Math.hypot(dx, dy);
+
+    	    const ux = dx / len;
+    	    const uy = dy / len;
 
             ctx.fillStyle = CONFIG.COLORS.EEL;
 
