@@ -262,35 +262,44 @@ export class Renderer {
     drawTailTip(ctx, drawPoints) {
 
         const tail = drawPoints[drawPoints.length - 1];
+
 	const prev1 = drawPoints[drawPoints.length - 2];
-
-	// 尾先の基準点を少し内側へ戻す
-	const baseX = tail.x * 0.75 + prev1.x * 0.25;
-	const baseY = tail.y * 0.75 + prev1.y * 0.25;
-
 	const prev2 = drawPoints[drawPoints.length - 3];
 
-	// 最後の2本のベクトル
+        // 最後の2本のベクトル
 	const dx1 = tail.x - prev1.x;
 	const dy1 = tail.y - prev1.y;
 
 	const dx2 = prev1.x - prev2.x;
 	const dy2 = prev1.y - prev2.y;
 
-	// 基本方向（平均）
-	let dx = dx1 + dx2;
-	let dy = dy1 + dy2;
+	// 現在の向きを70%、一つ前を30%採用
+	const currentWeight =
+    	    CONFIG.TAIL_DIRECTION_CURRENT;
 
-	let len = Math.hypot(dx, dy);
+	const previousWeight =
+    	    CONFIG.TAIL_DIRECTION_PREVIOUS;
 
-	if (len > 0.001) {
+	const dx =
+    	    dx1 * currentWeight +
+    	    dx2 * previousWeight;
 
-    	    const ux = dx / len;
-    	    const uy = dy / len;
+	const dy =
+    	    dy1 * currentWeight +
+    	    dy2 * previousWeight;
 
-	    // 方向ベクトルに対して垂直方向
-	    const px = -uy;
-	    const py = ux;
+        const len = Math.hypot(dx, dy);
+
+        if (len > 0.001) {
+
+            const ux = dx / len;
+            const uy = dy / len;
+
+            ctx.fillStyle = CONFIG.COLORS.EEL;
+
+            // 方向ベクトルに対して垂直方向
+            const px = -uy;
+            const py = ux;
 
             // 尾先の長さ
             const tipLength = CONFIG.TAIL_TIP_LENGTH;
@@ -311,20 +320,20 @@ export class Renderer {
 
             // 左根元
             ctx.moveTo(
-                baseX + px * tipWidth,
-                baseY + py * tipWidth
+                tail.x + px * tipWidth,
+                tail.y + py * tipWidth
             );
 
             // 尖った先端
             ctx.lineTo(
-                baseX + ux * tipLength,
-                baseY + uy * tipLength
+                tail.x + ux * tipLength,
+                tail.y + uy * tipLength
             );
 
             // 右根元
             ctx.lineTo(
-                baseX - px * tipWidth,
-                baseY - py * tipWidth
+                tail.x - px * tipWidth,
+                tail.y - py * tipWidth
             );
 
             ctx.closePath();
@@ -339,24 +348,24 @@ export class Renderer {
 
 	    // 左根元
 	    ctx.moveTo(
-    	        baseX + px * tipWidth,
-    	        baseY + py * tipWidth
+    	        tail.x + px * tipWidth,
+    	        tail.y + py * tipWidth
 	    );
 
 	    // 左側の曲線
 	    ctx.quadraticCurveTo(
-    		baseX + ux * curveForward + px * curveWidth,
-    		baseY + uy * curveForward + py * curveWidth,
-    		baseX + ux * tipLength,
-    		baseY + uy * tipLength
+    		tail.x + ux * curveForward + px * curveWidth,
+    		tail.y + uy * curveForward + py * curveWidth,
+    		tail.x + ux * tipLength,
+    		tail.y + uy * tipLength
 	    );
 
 	    // 右側の曲線
 	    ctx.quadraticCurveTo(
-    		baseX + ux * curveForward - px * curveWidth,
-    		baseY + uy * curveForward - py * curveWidth,
-    		baseX - px * tipWidth,
-    		baseY - py * tipWidth
+    		tail.x + ux * curveForward - px * curveWidth,
+    		tail.y + uy * curveForward - py * curveWidth,
+    		tail.x - px * tipWidth,
+    		tail.y - py * tipWidth
 	    );
 
 	    ctx.closePath();
