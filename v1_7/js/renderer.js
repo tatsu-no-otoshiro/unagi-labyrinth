@@ -222,13 +222,21 @@ export class Renderer {
 
 	    const tailStart = drawPoints.length - 4;
 
-	    let radius = CONFIG.BODY_RADIUS;
+	    // 基本半径（スマホでは少し細く描く）
+	    let radius =
+    		this.game.maze.tileSize < 40
+        	    ? CONFIG.BODY_RADIUS * 0.88
+        	    : CONFIG.BODY_RADIUS;
 
+	    // 尾側だけ徐々に細くする
 	    if (i >= tailStart) {
 
     		radius -= (i - tailStart + 1) * 1.0;
 
 	    }
+
+	    // 最小半径を保証
+	    radius = Math.max(radius, 1.2);
 
             ctx.beginPath();
 
