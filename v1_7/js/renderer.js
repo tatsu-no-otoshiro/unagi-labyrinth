@@ -271,51 +271,19 @@ export class Renderer {
 	const prev2 = drawPoints[drawPoints.length - 3];
 
         // 最後の2本のベクトル
-	const dx1 = baseX - prev1.x;
-	const dy1 = baseY - prev1.y;
+	const dx1 = tail.x - prev1.x;
+	const dy1 = tail.y - prev1.y;
 
 	const dx2 = prev1.x - prev2.x;
 	const dy2 = prev1.y - prev2.y;
 
-	// 現在の向きを70%、一つ前を30%採用
-	const currentWeight =
-    	    CONFIG.TAIL_DIRECTION_CURRENT;
+	// 最後の2節の平均方向
+	let dx = dx1 + dx2;
+	let dy = dy1 + dy2;
 
-	const previousWeight =
-    	    CONFIG.TAIL_DIRECTION_PREVIOUS;
-
-	// 基本方向
-	let dx =
-    	    dx1 * currentWeight +
-    	    dx2 * previousWeight;
-
-	let dy =
-    	    dy1 * currentWeight +
-    	    dy2 * previousWeight;
-
-	// 曲がり方向（符号だけ使う）
-	const cross = dx1 * dy2 - dy1 * dx2;
-	const bendSign = Math.sign(cross);
-
-	// 正規化
 	let len = Math.hypot(dx, dy);
 
 	if (len > 0.001) {
-
-    	    dx /= len;
-    	    dy /= len;
-
-    	    // 内側へほんの少し回す
-    	    const bendStrength = 0.08;
-
-    	    const rx = -dy;
-    	    const ry = dx;
-
-    	    dx += rx * bendSign * bendStrength;
-    	    dy += ry * bendSign * bendStrength;
-
-    	    // 再正規化
-    	    len = Math.hypot(dx, dy);
 
     	    const ux = dx / len;
     	    const uy = dy / len;
