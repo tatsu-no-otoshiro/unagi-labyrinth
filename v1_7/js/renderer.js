@@ -261,58 +261,26 @@ export class Renderer {
      */
     drawTailTip(ctx, drawPoints) {
 
-        const tail = drawPoints[drawPoints.length - 1];
-	const prev1 = drawPoints[drawPoints.length - 2];
+        // 尾柄（最後から2番目）を基準にする
+	const tail = drawPoints[drawPoints.length - 2];
 
-	// 尾先の基準点を少し内側へ戻す
-	const baseX = tail.x * 0.75 + prev1.x * 0.25;
-	const baseY = tail.y * 0.75 + prev1.y * 0.25;
+	// 尾端（最後の点）
+	const tip = drawPoints[drawPoints.length - 1];
 
-	const prev2 = drawPoints[drawPoints.length - 3];
+	// 描画基準点
+	const baseX = tail.x;
+	const baseY = tail.y;
 
-        // 最後の2本のベクトル
-	const dx1 = tail.x - prev1.x;
-	const dy1 = tail.y - prev1.y;
+	// 尾柄 → 尾端 の方向だけを見る
+	let dx = tip.x - tail.x;
+	let dy = tip.y - tail.y;
 
-	const dx2 = prev1.x - prev2.x;
-	const dy2 = prev1.y - prev2.y;
-
-	// 基本方向（平均）
-	let dx = dx1 + dx2;
-	let dy = dy1 + dy2;
-
-	// 正規化
 	let len = Math.hypot(dx, dy);
 
 	if (len > 0.001) {
 
-    	    dx /= len;
-    	    dy /= len;
-
-    	    // 曲がり方向
-    	    const cross = dx1 * dy2 - dy1 * dx2;
-
-    	    // 曲がりが十分ある時だけ補正
-    	    if (Math.abs(cross) > 1.0) {
-
-        	// 極小補正
-        	const bend = Math.sign(cross) * 0.035;
-
-        	const rx = -dy;
-        	const ry = dx;
-
-        	// 以前と逆向きに回す
-        	dx -= rx * bend;
-        	dy -= ry * bend;
-
-        	// 再正規化
-        	len = Math.hypot(dx, dy);
-        	dx /= len;
-        	dy /= len;
-    	    }
-
-    	    const ux = dx;
-    	    const uy = dy;
+    	    const ux = dx / len;
+    	    const uy = dy / len;
 
 	    // 方向ベクトルに対して垂直方向
 	    const px = -uy;
