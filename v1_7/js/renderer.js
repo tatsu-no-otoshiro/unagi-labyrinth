@@ -261,19 +261,25 @@ export class Renderer {
      */
     drawTailTip(ctx, drawPoints) {
 
-        // 尾柄（最後から2番目）を基準にする
-	const tail = drawPoints[drawPoints.length - 2];
+        const tail = drawPoints[drawPoints.length - 1];
+	const prev1 = drawPoints[drawPoints.length - 2];
 
-	// 尾端（最後の点）
-	const tip = drawPoints[drawPoints.length - 1];
+	// 尾先の基準点を少し内側へ戻す
+	const baseX = tail.x * 0.75 + prev1.x * 0.25;
+	const baseY = tail.y * 0.75 + prev1.y * 0.25;
 
-	// 描画基準点
-	const baseX = tail.x;
-	const baseY = tail.y;
+	const prev2 = drawPoints[drawPoints.length - 3];
 
-	// 尾柄 → 尾端 の方向だけを見る
-	let dx = tip.x - tail.x;
-	let dy = tip.y - tail.y;
+	// 最後の2本のベクトル
+	const dx1 = tail.x - prev1.x;
+	const dy1 = tail.y - prev1.y;
+
+	const dx2 = prev1.x - prev2.x;
+	const dy2 = prev1.y - prev2.y;
+
+	// 基本方向（平均）
+	let dx = dx1 + dx2;
+	let dy = dy1 + dy2;
 
 	let len = Math.hypot(dx, dy);
 
