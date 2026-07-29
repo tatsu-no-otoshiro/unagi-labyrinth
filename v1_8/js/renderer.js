@@ -10,6 +10,8 @@ export class Renderer {
 
     draw() {
 
+        const game = this.game;
+
         const ctx = this.game.ctx;
         const canvas = this.game.canvas;
 
@@ -150,11 +152,6 @@ export class Renderer {
 
         // クリア演出
         if (game.isCleared) {
-            this.drawClearOverlay(ctx, game);
-        }
-
-		if (game.isCleared) {
-            console.log("DRAW CLEAR OVERLAY");
             this.drawClearOverlay(ctx, game);
         }
 
