@@ -26,6 +26,16 @@ export class Game {
         // リサイズイベント
         window.addEventListener("resize", () => this.resize());
 
+        // クリア画面タップ／クリックでリトライ
+        const retry = () => {
+            if (this.isCleared) {
+                this.restart();
+            }
+        };
+
+        this.canvas.addEventListener("click", retry);
+        this.canvas.addEventListener("touchstart", retry);
+
     }
 
     start() {
