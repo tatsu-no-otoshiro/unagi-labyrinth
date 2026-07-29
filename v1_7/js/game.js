@@ -16,34 +16,12 @@ export class Game {
         this.input = new Input(this);
         this.renderer = new Renderer(this);
 
-        // ゲーム状態
-        this.isCleared = false;
-
-        // タイマー
-        this.startTime = 0;
-        this.clearTime = 0;
-
         // リサイズイベント
         window.addEventListener("resize", () => this.resize());
-
-        // クリア画面タップ／クリックでリトライ
-        const retry = () => {
-            if (this.isCleared) {
-                this.restart();
-            }
-        };
-
-        this.canvas.addEventListener("click", retry);
-        this.canvas.addEventListener("touchstart", retry);
 
     }
 
     start() {
-
-        this.startTime = performance.now();
-        this.clearTime = 0;
-
-        this.isCleared = false;
 
         this.resize();
 
@@ -56,11 +34,6 @@ export class Game {
 
     resize() {
 
-        this.startTime = performance.now();
-        this.clearTime = 0;
-
-        this.isCleared = false;
-
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
 
@@ -72,10 +45,6 @@ export class Game {
     }
 
     update() {
-
-        // クリア中は移動停止
-        if (this.isCleared) return;
-
         this.eel.update();
 
         if (this.isGoal()) {
@@ -94,26 +63,11 @@ export class Game {
     }
 
     clear() {
+        alert("クリア");
 
-        this.isCleared = true;
-
-        this.clearTime =
-            (performance.now() - this.startTime) / 1000;
-
-        console.log(`CLEAR ${this.clearTime.toFixed(2)} sec`);
-
-    }
-
-    restart() {
-
-        this.isCleared = false;
-
-        // 同じ迷路で再スタート
+        this.maze.build();
         this.eel.reset();
         this.input.reset();
-
-        this.startTime = performance.now();
-        this.clearTime = 0;
     }
 
     draw() {
