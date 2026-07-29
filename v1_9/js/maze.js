@@ -109,4 +109,21 @@ export class Maze {
 
     }
 
+    /**
+     * ステージを切り替える
+     * @param {number} stageNumber
+     */
+    setStage(stageNumber) {
+
+        if (this.stages[stageNumber]) {
+
+            this.stage = stageNumber;
+            this.map = this.stages[stageNumber];
+
+            this.build();
+
+        }
+
+    }
+
 }
