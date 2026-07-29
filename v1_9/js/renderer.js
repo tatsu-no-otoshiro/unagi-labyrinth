@@ -10,6 +10,8 @@ export class Renderer {
 
     draw() {
 
+        const game = this.game;
+
         const ctx = this.game.ctx;
         const canvas = this.game.canvas;
 
@@ -148,6 +150,11 @@ export class Renderer {
         // 頭
         this.drawHead(ctx, eel);
 
+        // クリア演出
+        if (game.isCleared) {
+            this.drawClearOverlay(ctx, game);
+        }
+
     }
 
     /**
@@ -222,13 +229,21 @@ export class Renderer {
 
 	    const tailStart = drawPoints.length - 4;
 
-	    let radius = CONFIG.BODY_RADIUS;
+	    // 基本半径（スマホでは少し細く描く）
+	    let radius =
+    		this.game.maze.tileSize < 40
+        	    ? CONFIG.BODY_RADIUS * 0.88
+        	    : CONFIG.BODY_RADIUS;
 
+	    // 尾側だけ徐々に細くする
 	    if (i >= tailStart) {
 
     		radius -= (i - tailStart + 1) * 1.0;
 
 	    }
+
+	    // 最小半径を保証
+	    radius = Math.max(radius, 1.2);
 
             ctx.beginPath();
 
@@ -527,6 +542,47 @@ export class Renderer {
 	ctx.fill();
 
         ctx.restore();
+    }
+
+    /**
+     * クリア画面を描画
+     * @param {CanvasRenderingContext2D} ctx
+     * @param {Game} game
+     */
+    drawClearOverlay(ctx, game) {
+
+        const w = game.canvas.width;
+        const h = game.canvas.height;
+
+        // 半透明背景
+        ctx.fillStyle = "rgba(0,0,0,0.45)";
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        // CLEAR!
+        ctx.fillStyle = "#ffd54f";
+        ctx.font = "bold 56px sans-serif";
+        ctx.fillText("CLEAR!", w / 2, h / 2 - 60);
+
+        // タイム
+        ctx.fillStyle = "white";
+        ctx.font = "32px sans-serif";
+        ctx.fillText(
+            `${game.clearTime.toFixed(2)} sec`,
+            w / 2,
+            h / 2 + 5
+        );
+
+        // リトライ案内
+        ctx.fillStyle = "#dddddd";
+        ctx.font = "22px sans-serif";
+        ctx.fillText(
+            "Tap / Click to Retry",
+            w / 2,
+            h / 2 + 60
+        );
     }
 
 }
