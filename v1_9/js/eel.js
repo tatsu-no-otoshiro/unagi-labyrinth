@@ -131,6 +131,8 @@ export class Eel {
         // body[0] は鼻先ではなく頭の後端を追従する
         let leader = this.head;
 
+	const maze = this.game.maze;
+
         for (const part of this.body) {
 
             const vx = part.x - leader.x;
@@ -149,6 +151,38 @@ export class Eel {
                     leader.y + vy * ratio;
 
             }
+
+	    // 壁から軽く押し戻す
+	    for (const wall of maze.walls) {
+
+    		const nearestX = Math.max(
+        	    wall.x,
+        	    Math.min(part.x, wall.x + maze.tileSize)
+    		);
+
+    		const nearestY = Math.max(
+        	    wall.y,
+        	    Math.min(part.y, wall.y + maze.tileSize)
+    		);
+
+    		const dxw = part.x - nearestX;
+    		const dyw = part.y - nearestY;
+
+    		const dist = Math.hypot(dxw, dyw);
+
+    		// 少しだけ余裕を残す
+    		const limit = this.radius * 0.45;
+
+    		if (dist > 0 && dist < limit) {
+
+        	    // 押し戻し量を弱くする
+		    const push = (limit - dist) * 0.15;
+
+		    part.x += dxw / dist * push;
+		    part.y += dyw / dist * push;
+
+    		}
+	    }
 
             leader = part;
 
