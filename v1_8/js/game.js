@@ -94,6 +94,18 @@ export class Game {
 
     }
 
+    restart() {
+
+        this.isCleared = false;
+
+        // 同じ迷路で再スタート
+        this.eel.reset();
+        this.input.reset();
+
+        this.startTime = performance.now();
+        this.clearTime = 0;
+    }
+
     draw() {
 
         this.renderer.draw();
