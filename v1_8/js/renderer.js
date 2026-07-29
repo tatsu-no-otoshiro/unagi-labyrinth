@@ -155,6 +155,11 @@ export class Renderer {
             this.drawClearOverlay(ctx, game);
         }
 
+        if (game.isCleared) {
+            console.log("DRAW CLEAR OVERLAY");
+            this.drawClearOverlay(ctx, game);
+        }
+		
     }
 
     /**
