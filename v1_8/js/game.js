@@ -19,12 +19,19 @@ export class Game {
         // ゲーム状態
         this.isCleared = false;
 
+        // タイマー
+        this.startTime = 0;
+        this.clearTime = 0;
+
         // リサイズイベント
         window.addEventListener("resize", () => this.resize());
 
     }
 
     start() {
+
+        this.startTime = performance.now();
+        this.clearTime = 0;
 
         this.isCleared = false;
 
@@ -38,6 +45,9 @@ export class Game {
     }
 
     resize() {
+
+        this.startTime = performance.now();
+        this.clearTime = 0;
 
         this.isCleared = false;
 
@@ -77,7 +87,10 @@ export class Game {
 
         this.isCleared = true;
 
-        console.log("CLEAR");
+        this.clearTime =
+            (performance.now() - this.startTime) / 1000;
+
+        console.log(`CLEAR ${this.clearTime.toFixed(2)} sec`);
 
     }
 
