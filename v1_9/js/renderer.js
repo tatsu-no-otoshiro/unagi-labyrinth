@@ -18,8 +18,18 @@ export class Renderer {
         const maze = this.game.maze;
         const eel = this.game.eel;
 
-        // 背景
-        ctx.fillStyle = CONFIG.COLORS.BACKGROUND;
+        // 背景（上が少し明るく、下が少し暗い）
+        const grad = ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            canvas.height
+        );
+
+        grad.addColorStop(0, "#b8e6ff"); // 上
+        grad.addColorStop(1, "#79bddb"); // 下
+
+        ctx.fillStyle = grad;
         ctx.fillRect(
             0,
             0,
