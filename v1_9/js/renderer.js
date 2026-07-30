@@ -28,16 +28,25 @@ export class Renderer {
         );
 
         // 壁
-        ctx.fillStyle = CONFIG.COLORS.WALL;
-
         for (const wall of maze.walls) {
 
-            ctx.fillRect(
-                wall.x,
-                wall.y,
-                maze.tileSize,
-                maze.tileSize
-            );
+            const x = wall.x;
+            const y = wall.y;
+            const s = maze.tileSize;
+
+            // ベース
+            ctx.fillStyle = CONFIG.COLORS.WALL;
+            ctx.fillRect(x, y, s, s);
+
+            // 左上ハイライト
+            ctx.fillStyle = "rgba(255,255,255,0.10)";
+            ctx.fillRect(x, y, s, 2);
+            ctx.fillRect(x, y, 2, s);
+
+            // 右下シャドウ
+            ctx.fillStyle = "rgba(0,0,0,0.18)";
+            ctx.fillRect(x, y + s - 2, s, 2);
+            ctx.fillRect(x + s - 2, y, 2, s);
 
         }
 
