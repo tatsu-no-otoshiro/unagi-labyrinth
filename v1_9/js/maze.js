@@ -27,7 +27,7 @@ export class Maze {
             "###############"
             ]
 
-         };
+        };
 
         // 現在のステージ番号
         this.stage = 1;
