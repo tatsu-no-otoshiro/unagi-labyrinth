@@ -47,9 +47,6 @@ export class Game {
 
         this.resize();
 
-        // Stage2 テスト
-        this.maze.setStage(2);
-
         this.eel.reset();
         this.input.reset();
 
