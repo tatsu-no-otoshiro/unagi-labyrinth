@@ -1,6 +1,6 @@
 # ウナギの迷宮
 
-**Current version: v1.8.0-alpha1**
+**Current version: v1.9.0-alpha1**
 
 ## 概要
 
