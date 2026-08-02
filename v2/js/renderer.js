@@ -611,6 +611,14 @@ export class Renderer {
         ctx.arc(0, 0, virus.radius, 0, Math.PI * 2);
         ctx.fill();
 
+        // 外周の発光輪郭
+        ctx.strokeStyle = "rgba(180,255,200,0.9)";
+        ctx.lineWidth = 2;
+
+        ctx.beginPath();
+        ctx.arc(0, 0, virus.radius + 1, 0, Math.PI * 2);
+        ctx.stroke();
+
         // 核
         ctx.fillStyle = "rgba(170,120,255,0.35)";
 
