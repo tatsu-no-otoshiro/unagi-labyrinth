@@ -582,7 +582,7 @@ export class Renderer {
         ctx.translate(virus.x, virus.y);
 
         // 棘
-        ctx.strokeStyle = "rgba(80,220,120,0.8)";
+        ctx.strokeStyle = "rgba(120,255,170,0.95)";
         ctx.lineWidth = 2;
 
         for (let i = 0; i < spikeCount; i++) {
@@ -610,14 +610,6 @@ export class Renderer {
         ctx.beginPath();
         ctx.arc(0, 0, virus.radius, 0, Math.PI * 2);
         ctx.fill();
-
-        // 外周の発光輪郭
-        ctx.strokeStyle = "rgba(180,255,200,0.9)";
-        ctx.lineWidth = 2;
-
-        ctx.beginPath();
-        ctx.arc(0, 0, virus.radius + 1, 0, Math.PI * 2);
-        ctx.stroke();
 
         // 核
         ctx.fillStyle = "rgba(170,120,255,0.35)";
