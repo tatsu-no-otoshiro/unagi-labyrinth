@@ -169,20 +169,8 @@ export class Renderer {
         // 頭
         this.drawHead(ctx, eel);
 
-        // 敵（試作）
-        ctx.fillStyle = "#d33";
-
-        ctx.beginPath();
-
-        ctx.arc(
-            this.game.enemy.x,
-            this.game.enemy.y,
-            this.game.enemy.radius,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fill();
+        // 敵（ウイルス）
+        this.drawVirus(ctx, this.game.enemy);
 
         // クリア演出
         if (game.isCleared) {
@@ -576,6 +564,62 @@ export class Renderer {
 	ctx.fill();
 
         ctx.restore();
+    }
+
+    /**
+     * ウイルスを描画する
+     * @param {CanvasRenderingContext2D} ctx
+     * @param {Object} virus
+     */
+    drawVirus(ctx, virus) {
+
+        const spikeCount = 10;
+
+        const inner = virus.radius * 0.9;
+        const outer = virus.radius * 1.4;
+
+        ctx.save();
+        ctx.translate(virus.x, virus.y);
+
+        // 棘
+        ctx.strokeStyle = "rgba(80,220,120,0.8)";
+        ctx.lineWidth = 2;
+
+        for (let i = 0; i < spikeCount; i++) {
+
+            const a = i / spikeCount * Math.PI * 2;
+
+            ctx.beginPath();
+            ctx.moveTo(
+                Math.cos(a) * inner,
+                Math.sin(a) * inner
+            );
+
+            ctx.lineTo(
+                Math.cos(a) * outer,
+                Math.sin(a) * outer
+            );
+
+            ctx.stroke();
+
+        }
+
+        // 本体
+        ctx.fillStyle = "rgba(80,220,120,0.55)";
+
+        ctx.beginPath();
+        ctx.arc(0, 0, virus.radius, 0, Math.PI * 2);
+        ctx.fill();
+
+        // 核
+        ctx.fillStyle = "rgba(170,120,255,0.35)";
+
+        ctx.beginPath();
+        ctx.arc(0, 0, virus.radius * 0.45, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore();
+
     }
 
     /**
