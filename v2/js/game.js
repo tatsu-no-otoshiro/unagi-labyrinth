@@ -16,6 +16,15 @@ export class Game {
         this.input = new Input(this);
         this.renderer = new Renderer(this);
 
+        // 敵（試作）
+        this.enemy = {
+
+            x: 0,
+            y: 0,
+            radius: 12
+
+        };
+
         // ゲーム状態
         this.isCleared = false;
 
@@ -46,6 +55,10 @@ export class Game {
         this.isCleared = false;
 
         this.resize();
+
+        // 敵を左上へ配置
+        this.enemy.x = this.maze.offsetX + this.maze.tileSize * 1.5;
+        this.enemy.y = this.maze.offsetY + this.maze.tileSize * 1.5;
 
         this.eel.reset();
         this.input.reset();
