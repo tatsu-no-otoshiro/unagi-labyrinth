@@ -605,7 +605,7 @@ export class Renderer {
         }
 
         // 本体
-        ctx.fillStyle = "rgba(80,220,120,0.55)";
+        ctx.fillStyle = "rgba(80,220,120,0.68)";
 
         ctx.beginPath();
         ctx.arc(0, 0, virus.radius, 0, Math.PI * 2);
