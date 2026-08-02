@@ -582,7 +582,7 @@ export class Renderer {
         ctx.translate(virus.x, virus.y);
 
         // 棘
-        ctx.strokeStyle = "rgba(120,255,170,0.95)";
+        ctx.strokeStyle = "rgba(80,220,120,0.8)";
         ctx.lineWidth = 2;
 
         for (let i = 0; i < spikeCount; i++) {
