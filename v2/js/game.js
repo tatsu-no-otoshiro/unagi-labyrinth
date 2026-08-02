@@ -116,6 +116,10 @@ export class Game {
     }
 
     isGoal() {
+
+        // ゴールが存在しないステージ
+        if (this.goalDisabled()) return false;
+
         const goal = this.maze.goal;
         const eel = this.eel;
 
@@ -123,6 +127,10 @@ export class Game {
             Math.hypot(goal.x - eel.x, goal.y - eel.y) <
             goal.radius + eel.radius
         );
+    }
+
+    goalDisabled() {
+        return this.maze.goal.x < 0;
     }
 
     clear() {
