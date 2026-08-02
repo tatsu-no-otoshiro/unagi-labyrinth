@@ -169,6 +169,21 @@ export class Renderer {
         // 頭
         this.drawHead(ctx, eel);
 
+        // 敵（試作）
+        ctx.fillStyle = "#d33";
+
+        ctx.beginPath();
+
+        ctx.arc(
+            this.game.enemy.x,
+            this.game.enemy.y,
+            this.game.enemy.radius,
+            0,
+            Math.PI * 2
+        );
+
+        ctx.fill();
+
         // クリア演出
         if (game.isCleared) {
             this.drawClearOverlay(ctx, game);
