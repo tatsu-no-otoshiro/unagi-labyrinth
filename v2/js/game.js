@@ -56,6 +56,9 @@ export class Game {
 
         this.resize();
 
+        // Stage2 テスト
+        this.maze.setStage(2);
+
         // 敵を左上へ配置
         this.enemy.x = this.maze.offsetX + this.maze.tileSize * 1.5;
         this.enemy.y = this.maze.offsetY + this.maze.tileSize * 1.5;
@@ -91,9 +94,25 @@ export class Game {
 
         this.eel.update();
 
+        // 敵をゆっくり追尾
+        const dx = this.eel.head.x - this.enemy.x;
+        const dy = this.eel.head.y - this.enemy.y;
+
+        const len = Math.hypot(dx, dy);
+
+        if (len > 0.001) {
+
+            const speed = 0.6; // まずはかなり遅く
+
+            this.enemy.x += dx / len * speed;
+            this.enemy.y += dy / len * speed;
+
+        }
+
         if (this.isGoal()) {
             this.clear();
         }
+
     }
 
     isGoal() {
