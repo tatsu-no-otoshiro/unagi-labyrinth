@@ -76,6 +76,10 @@ export class Maze {
 
         this.walls = [];
 
+        // ゴールを一旦無効化
+        this.goal.x = -9999;
+        this.goal.y = -9999;
+
         const canvas = this.game.canvas;
 
         this.tileSize = Math.floor(
