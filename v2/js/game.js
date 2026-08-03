@@ -66,7 +66,7 @@ export class Game {
 
         // クリア画面タップ／クリックでリトライ
         const retry = () => {
-            if (this.isCleared) {
+            if (this.isCleared || this.isGameOver) {
                 this.restart();
             }
         };
