@@ -18,16 +18,37 @@ export class Renderer {
         const maze = this.game.maze;
         const eel = this.game.eel;
 
-        // 背景（上が少し明るく、下が少し暗い）
-        const grad = ctx.createLinearGradient(
-            0,
-            0,
-            0,
-            canvas.height
-        );
+        // 背景
+        let grad;
 
-        grad.addColorStop(0, "#b8e6ff"); // 上
-        grad.addColorStop(1, "#79bddb"); // 下
+        if (maze.currentStage === 2) {
+
+            // Stage2: 感染生け簀（濁った養殖水）
+            grad = ctx.createLinearGradient(
+                0,
+                0,
+                0,
+                canvas.height
+            );
+
+            grad.addColorStop(0.0, "#7fa7b3"); // 水面付近
+            grad.addColorStop(0.5, "#5f8692"); // 中層
+            grad.addColorStop(1.0, "#476874"); // 深部
+
+        } else {
+
+            // Stage1: 従来の明るい水色
+            grad = ctx.createLinearGradient(
+                0,
+                0,
+                0,
+                canvas.height
+            );
+
+            grad.addColorStop(0, "#b8e6ff"); // 上
+            grad.addColorStop(1, "#79bddb"); // 下
+
+        }
 
         ctx.fillStyle = grad;
         ctx.fillRect(
