@@ -193,6 +193,28 @@ export class Renderer {
         // 敵（ウイルス）
         this.drawVirus(ctx, this.game.enemy);
 
+        // サバイバルタイマー表示
+        if (maze.stage === 2 && !game.isCleared) {
+
+            const elapsed =
+                (performance.now() - game.startTime) / 1000;
+
+            const remain =
+                Math.max(0, game.survivalLimit - elapsed);
+
+            ctx.fillStyle = "rgba(255,255,255,0.9)";
+            ctx.font = "bold 26px sans-serif";
+            ctx.textAlign = "left";
+            ctx.textBaseline = "top";
+
+            ctx.fillText(
+                `TIME ${remain.toFixed(1)}`,
+                20,
+                20
+            );
+
+        }
+
         // クリア演出
         if (game.isCleared) {
             this.drawClearOverlay(ctx, game);
