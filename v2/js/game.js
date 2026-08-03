@@ -138,6 +138,14 @@ export class Game {
 
         }
 
+        // ウイルス接触判定
+        if (this.isHitVirus()) {
+
+            this.gameOver();
+            return;
+
+        }
+
         // Stage1: ゴール判定
         if (this.maze.stage === 1 && this.isGoal()) {
 
@@ -167,6 +175,10 @@ export class Game {
 
     }
 
+    goalDisabled() {
+        return this.maze.goal.x < 0;
+    }
+
     isGoal() {
 
         // ゴールが存在しないステージ
@@ -181,8 +193,40 @@ export class Game {
         );
     }
 
-    goalDisabled() {
-        return this.maze.goal.x < 0;
+    isHitVirus() {
+
+        const enemy = this.enemy;
+
+        // 頭判定
+        {
+            const dx = this.eel.head.x - enemy.x;
+            const dy = this.eel.head.y - enemy.y;
+
+            if (
+                Math.hypot(dx, dy) <
+                this.eel.radius + enemy.radius
+            ) {
+                return true;
+            }
+        }
+
+        // 胴体判定
+        for (const p of this.eel.body) {
+
+            const dx = p.x - enemy.x;
+            const dy = p.y - enemy.y;
+
+            if (
+                Math.hypot(dx, dy) <
+                p.radius + enemy.radius
+            ) {
+                return true;
+            }
+
+        }
+
+        return false;
+
     }
 
     clear() {
@@ -190,6 +234,12 @@ export class Game {
         this.isCleared = true;
 
         // clearTime は呼び出し側で設定する
+
+    }
+
+    gameOver() {
+
+        this.isGameOver = true;
 
     }
 
