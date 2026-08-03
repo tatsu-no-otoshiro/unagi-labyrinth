@@ -31,9 +31,9 @@ export class Renderer {
                 canvas.height
             );
 
-            grad.addColorStop(0.0, "#7fa7b3"); // 水面付近
-            grad.addColorStop(0.5, "#5f8692"); // 中層
-            grad.addColorStop(1.0, "#476874"); // 深部
+            grad.addColorStop(0.0, "#6f8f8a"); // 水面付近
+            grad.addColorStop(0.5, "#55706b"); // 中層
+            grad.addColorStop(1.0, "#3f5552"); // 深部
 
         } else {
 
