@@ -1,709 +1,185 @@
-import { CONFIG } from "./config.js";
+import { Maze } from "./maze.js";
+import { Eel } from "./eel.js";
+import { Input } from "./input.js";
+import { Renderer } from "./renderer.js";
 
-export class Renderer {
+export class Game {
 
-    constructor(game) {
+    constructor() {
 
-        this.game = game;
+        this.canvas = document.getElementById("game");
+        this.ctx = this.canvas.getContext("2d");
 
-    }
+        // 各クラス生成
+        this.maze = new Maze(this);
+        this.eel = new Eel(this);
+        this.input = new Input(this);
+        this.renderer = new Renderer(this);
 
-    draw() {
+        // 敵（試作）
+        this.enemy = {
 
-        const game = this.game;
+            x: 0,
+            y: 0,
+            radius: 12
 
-        const ctx = this.game.ctx;
-        const canvas = this.game.canvas;
+        };
 
-        const maze = this.game.maze;
-        const eel = this.game.eel;
+        // ゲーム状態
+        this.isCleared = false;
 
-        // 背景
-        let grad;
+        // タイマー
+        this.startTime = 0;
+        this.clearTime = 0;
 
-        if (maze.stage === 2) {
+        // サバイバル設定
+        this.survivalLimit = 20; // 秒
 
-            // Stage2: 感染生け簀（濁った養殖水）
-            grad = ctx.createLinearGradient(
-                0,
-                0,
-                0,
-                canvas.height
-            );
+        // リサイズイベント
+        window.addEventListener("resize", () => this.resize());
 
-            grad.addColorStop(0.0, "#86b1ab"); // 水面付近
-            grad.addColorStop(0.5, "#7ca8a2"); // 中層
-            grad.addColorStop(1.0, "#5f8882"); // 深部
-
-        } else {
-
-            // Stage1: 従来の明るい水色
-            grad = ctx.createLinearGradient(
-                0,
-                0,
-                0,
-                canvas.height
-            );
-
-            grad.addColorStop(0, "#b8e6ff"); // 上
-            grad.addColorStop(1, "#79bddb"); // 下
-
-        }
-
-        ctx.fillStyle = grad;
-        ctx.fillRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
-
-        // 壁
-        for (const wall of maze.walls) {
-
-            const x = wall.x;
-            const y = wall.y;
-            const s = maze.tileSize;
-
-            // ベース
-            ctx.fillStyle = CONFIG.COLORS.WALL;
-            ctx.fillRect(x, y, s, s);
-
-            // 左上ハイライト
-            ctx.fillStyle = "rgba(255,255,255,0.10)";
-            ctx.fillRect(x, y, s, 2);
-            ctx.fillRect(x, y, 2, s);
-
-            // 右下シャドウ
-            ctx.fillStyle = "rgba(0,0,0,0.18)";
-            ctx.fillRect(x, y + s - 2, s, 2);
-            ctx.fillRect(x + s - 2, y, 2, s);
-
-        }
-
-        // ゴール
-        ctx.fillStyle = CONFIG.COLORS.GOAL;
-
-        ctx.beginPath();
-
-        ctx.arc(
-            maze.goal.x,
-            maze.goal.y,
-            maze.goal.radius,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fill();
-
-        // --------------------
-        // 胴体
-        // --------------------
-
-        if (eel.body.length > 0) {
-
-            // 波アニメーション
-            if (this.waveTime === undefined) {
-                this.waveTime = 0;
+        // クリア画面タップ／クリックでリトライ
+        const retry = () => {
+            if (this.isCleared) {
+                this.restart();
             }
-            this.waveTime += 0.08;
+        };
 
-	    // --------------------
-	    // 描画用データ生成
-	    // --------------------
-
-            const drawPoints = [];
-
-            // 中心線の先頭（鼻先）
-            drawPoints.push({
-                x: eel.x,
-                y: eel.y
-            });
-
-            // 頭の節
-            drawPoints.push({
-                x: eel.head.x,
-                y: eel.head.y
-            });
-
-            // 胴体
-            for (let i = 0; i < eel.body.length; i++) {
-
-                const part = eel.body[i];
-
-                // 前の節（0番は頭）
-                const prev =
-                    (i === 0)
-                        ? eel.head
-                        : eel.body[i - 1];
-
-                let dx = prev.x - part.x;
-                let dy = prev.y - part.y;
-
-                const len = Math.hypot(dx, dy);
-
-                let nx = 0;
-                let ny = 0;
-
-                if (len > 0.001) {
-                    nx = -dy / len;
-                    ny = dx / len;
-                }
-
-                // 中央付近だけ大きく揺らす
-                const t = (i + 1) / (eel.body.length + 1);
-
-                const amplitude =
-                    Math.sin(t * Math.PI) * 3;
-
-                const offset =
-                    Math.sin(this.waveTime - i * 0.55)
-                    * amplitude;
-
-                drawPoints.push({
-
-                    x: part.x + nx * offset,
-                    y: part.y + ny * offset
-
-                });
-
-            }
-
-	    // --------------------
-	    // 描画
-	    // --------------------
-
-            // 一本線
-	    this.drawBodyLine(ctx, drawPoints);
-
-            // 節
-	    this.drawBodySegments(ctx, drawPoints);
-
-	    // 尾端
-	    this.drawTailTip(ctx, drawPoints);
-
-            // 胸びれ
-	    this.drawPectoralFins(ctx, drawPoints);
-
-        }
-
-        // 頭
-        this.drawHead(ctx, eel);
-
-        // 敵（ウイルス）
-        this.drawVirus(ctx, this.game.enemy);
-
-        // サバイバルタイマー表示
-        if (maze.stage === 2 && !game.isCleared) {
-
-            const elapsed =
-                (performance.now() - game.startTime) / 1000;
-
-            const remain =
-                Math.max(0, game.survivalLimit - elapsed);
-
-            ctx.fillStyle = "rgba(255,255,255,0.9)";
-            ctx.font = "bold 26px sans-serif";
-            ctx.textAlign = "left";
-            ctx.textBaseline = "top";
-
-            ctx.fillText(
-                `TIME ${remain.toFixed(1)}`,
-                20,
-                20
-            );
-
-        }
-
-        // クリア演出
-        if (game.isCleared) {
-            this.drawClearOverlay(ctx, game);
-        }
+        this.canvas.addEventListener("click", retry);
+        this.canvas.addEventListener("touchstart", retry);
 
     }
 
-    /**
-     * ウナギの胴体ラインを描画する
-     * @param {CanvasRenderingContext2D} ctx
-     * @param {Array} drawPoints
-     */
-    drawBodyLine(ctx, drawPoints) {
+    start() {
 
-        ctx.strokeStyle = CONFIG.COLORS.EEL;
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
+        this.startTime = performance.now();
+        this.clearTime = 0;
 
-        for (let i = drawPoints.length - 1; i > 1; i--) {
+        this.isCleared = false;
 
-            const p0 = drawPoints[i];
-            const p1 = drawPoints[i - 1];
+        this.resize();
 
-            // 尻尾=0、頭=1 の割合
-            const t = 1 - (i - 1) / (drawPoints.length - 2);
+        // Stage2 テスト
+        this.maze.setStage(2);
 
-            // 首は少し細く、中央が最大、尻尾へ向かって細く
-            let widthScale =
-                0.92 +
-                Math.sin(t * Math.PI) * 0.33;
+        // 敵を左上へ配置
+        this.enemy.x = this.maze.offsetX + this.maze.tileSize * 1.5;
+        this.enemy.y = this.maze.offsetY + this.maze.tileSize * 1.5;
 
-            if (t < 0.25) {
+        this.eel.reset();
+        this.input.reset();
 
-                const k = t / 0.25;
-
-                widthScale *=
-                    0.6 + 0.4 * k;
-
-            }
-
-            ctx.lineWidth =
-                CONFIG.BODY_RADIUS * 2 * widthScale;
-
-            ctx.beginPath();
-
-            ctx.moveTo(
-                p0.x,
-                p0.y
-            );
-
-            const mx = (p0.x + p1.x) * 0.5;
-            const my = (p0.y + p1.y) * 0.5;
-
-            ctx.quadraticCurveTo(
-                p0.x,
-                p0.y,
-                mx,
-                my
-            );
-
-            ctx.stroke();
-
-        }
+        this.loop();
 
     }
 
-    /**
-     * ウナギの節を描画する
-     * @param {CanvasRenderingContext2D} ctx
-     * @param {Array} drawPoints
-     */
-    drawBodySegments(ctx, drawPoints) {
+    resize() {
 
-	ctx.fillStyle = CONFIG.COLORS.EEL;
+        this.startTime = performance.now();
+        this.clearTime = 0;
 
-        for (let i = 1; i < drawPoints.length; i++) {
+        this.isCleared = false;
 
-	    const tailStart = drawPoints.length - 4;
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
 
-	    // 基本半径（スマホでは少し細く描く）
-	    let radius =
-    		this.game.maze.tileSize < 40
-        	    ? CONFIG.BODY_RADIUS * 0.88
-        	    : CONFIG.BODY_RADIUS;
+        this.maze.build();
 
-	    // 尾側だけ徐々に細くする
-	    if (i >= tailStart) {
-
-    		radius -= (i - tailStart + 1) * 1.0;
-
-	    }
-
-	    // 最小半径を保証
-	    radius = Math.max(radius, 1.2);
-
-            ctx.beginPath();
-
-            ctx.arc(
-                drawPoints[i].x,
-                drawPoints[i].y,
-                radius,
-                0,
-                Math.PI * 2
-            );
-
-            ctx.fill();
-
-        }
+        this.eel.reset();
+        this.input.reset();
 
     }
 
-    /**
-     * ウナギの尾端を描画する
-     * @param {CanvasRenderingContext2D} ctx
-     * @param {Array} drawPoints
-     */
-    drawTailTip(ctx, drawPoints) {
+    update() {
 
-        const tail = drawPoints[drawPoints.length - 1];
+        // クリア中は移動停止
+        if (this.isCleared) return;
 
-	const prev1 = drawPoints[drawPoints.length - 2];
-	const prev2 = drawPoints[drawPoints.length - 3];
+        this.eel.update();
 
-        // 最後の2本のベクトル
-	const dx1 = tail.x - prev1.x;
-	const dy1 = tail.y - prev1.y;
-
-	const dx2 = prev1.x - prev2.x;
-	const dy2 = prev1.y - prev2.y;
-
-	// 現在の向きを70%、一つ前を30%採用
-	const currentWeight =
-    	    CONFIG.TAIL_DIRECTION_CURRENT;
-
-	const previousWeight =
-    	    CONFIG.TAIL_DIRECTION_PREVIOUS;
-
-	const dx =
-    	    dx1 * currentWeight +
-    	    dx2 * previousWeight;
-
-	const dy =
-    	    dy1 * currentWeight +
-    	    dy2 * previousWeight;
+        // 敵をゆっくり追尾
+        const dx = this.eel.head.x - this.enemy.x;
+        const dy = this.eel.head.y - this.enemy.y;
 
         const len = Math.hypot(dx, dy);
 
         if (len > 0.001) {
 
-            const ux = dx / len;
-            const uy = dy / len;
+            const speed = 0.6; // まずはかなり遅く
 
-            ctx.fillStyle = CONFIG.COLORS.EEL;
-
-            // 方向ベクトルに対して垂直方向
-            const px = -uy;
-            const py = ux;
-
-            // 尾先の長さ
-            const tipLength = CONFIG.TAIL_TIP_LENGTH;
-
-            // 尾先の幅
-            const tipWidth  = CONFIG.TAIL_TIP_WIDTH;
-
-	    // 曲線の制御
-	    const curveForward = CONFIG.TAIL_CURVE_FORWARD;
-	    const curveWidth   = CONFIG.TAIL_CURVE_WIDTH;
-
-	   /*
-	    // --------------------
-	    // 三角形版
-	    // --------------------
-
-            ctx.beginPath();
-
-            // 左根元
-            ctx.moveTo(
-                tail.x + px * tipWidth,
-                tail.y + py * tipWidth
-            );
-
-            // 尖った先端
-            ctx.lineTo(
-                tail.x + ux * tipLength,
-                tail.y + uy * tipLength
-            );
-
-            // 右根元
-            ctx.lineTo(
-                tail.x - px * tipWidth,
-                tail.y - py * tipWidth
-            );
-
-            ctx.closePath();
-            ctx.fill();
-	   */
-
-	    // --------------------
-	    // 涙滴形版（Bezier）
-	    // --------------------
-
-	    ctx.beginPath();
-
-	    // 左根元
-	    ctx.moveTo(
-    	        tail.x + px * tipWidth,
-    	        tail.y + py * tipWidth
-	    );
-
-	    // 左側の曲線
-	    ctx.quadraticCurveTo(
-    		tail.x + ux * curveForward + px * curveWidth,
-    		tail.y + uy * curveForward + py * curveWidth,
-    		tail.x + ux * tipLength,
-    		tail.y + uy * tipLength
-	    );
-
-	    // 右側の曲線
-	    ctx.quadraticCurveTo(
-    		tail.x + ux * curveForward - px * curveWidth,
-    		tail.y + uy * curveForward - py * curveWidth,
-    		tail.x - px * tipWidth,
-    		tail.y - py * tipWidth
-	    );
-
-	    ctx.closePath();
-	    ctx.fill();
+            this.enemy.x += dx / len * speed;
+            this.enemy.y += dy / len * speed;
 
         }
-    }
 
-    /**
-     * ウナギの胸びれを描画する
-     * @param {CanvasRenderingContext2D} ctx
-     * @param {Array} drawPoints
-     */
-    drawPectoralFins(ctx, drawPoints) {
+        // サバイバルクリア判定
+        const elapsed =
+            (performance.now() - this.startTime) / 1000;
 
-	if (drawPoints.length < 4) return;
-	
-	// 胸びれの付け根（最初の胴体）
-	const base = drawPoints[1];
+        if (elapsed >= this.survivalLimit) {
 
-	// 次の節
-	const next = drawPoints[2];
-
-	// 胴体の向き
-	const bodyDx = base.x - next.x;
-	const bodyDy = base.y - next.y;
-
-	const bodyLen = Math.hypot(bodyDx, bodyDy);
-
-	if (bodyLen < 0.001) return;
-
-	const bodyUx = bodyDx / bodyLen;
-	const bodyUy = bodyDy / bodyLen;
-
-	const ux = bodyUx;
-	const uy = bodyUy;
-
-	const px = -uy;
-	const py = ux;
-
-	// 左右の付け根
-	const leftFinX  = base.x + px * 2;
-	const leftFinY  = base.y + py * 2;
-
-	const rightFinX = base.x - px * 2;
-	const rightFinY = base.y - py * 2;
-
-	ctx.fillStyle = CONFIG.COLORS.FIN;
-
-
-	// ===== 左胸びれ =====
-	ctx.beginPath();
-
-	ctx.moveTo(leftFinX, leftFinY);
-
-	ctx.lineTo(
-    	    leftFinX - ux * 10 + px * 12,
-    	    leftFinY - uy * 10 + py * 12
-	);
-
-	ctx.quadraticCurveTo(
-
-    	    leftFinX + px * 20 - ux * 2,
-    	    leftFinY + py * 20 - uy * 2,
-
-    	    leftFinX,
-    	    leftFinY
-
-	);
-
-	ctx.closePath();
-	ctx.fill();
-
-
-	// ===== 右胸びれ =====
-	ctx.beginPath();
-
-	ctx.moveTo(rightFinX, rightFinY);
-
-	ctx.lineTo(
-    	    rightFinX - ux * 10 - px * 12,
-    	    rightFinY - uy * 10 - py * 12
-	);
-
-	ctx.quadraticCurveTo(
-
-    	    rightFinX - px * 20 - ux * 2,
-    	    rightFinY - py * 20 - uy * 2,
-
-    	    rightFinX,
-    	    rightFinY
-
-	);
-
-	ctx.closePath();
-	ctx.fill();
-    }
-
-    /**
-     * ウナギの頭を描画する
-     * @param {CanvasRenderingContext2D} ctx
-     * @param {Array} drawPoints
-     */
-    drawHead(ctx, eel) {
-	ctx.save();
-
-        const headCenterX = (eel.x + eel.head.x) * 0.5;
-        const headCenterY = (eel.y + eel.head.y) * 0.5;
-
-        ctx.translate(
-            headCenterX,
-            headCenterY
-        );
-
-        ctx.rotate(
-            eel.angle
-        );
-
-        ctx.fillStyle = CONFIG.COLORS.EEL;
-
-        ctx.beginPath();
-
-        const headWidth =
-            CONFIG.BODY_RADIUS * 2.5;
-
-        const headHeight =
-            CONFIG.BODY_RADIUS * 1.25;
-
-        ctx.beginPath();
-
-        ctx.ellipse(
-            0,
-            0,
-            headWidth,
-            headHeight,
-            0,
-            0,
-            Math.PI * 2
-        );
-
-        ctx.fill();
-
-	// ===== 左右の目 =====
-
-	ctx.fillStyle = "#2b261d";
-
-	// 左目
-	ctx.beginPath();
-	ctx.arc(
-    	    headWidth * 0.48,
-    	    -headHeight * 0.70,
-    	    CONFIG.EYE_RADIUS,
-    	    0,
-    	    Math.PI * 2
-	);
-	ctx.fill();
-
-	// 右目
-	ctx.beginPath();
-	ctx.arc(
-    	    headWidth * 0.48,
-    	    headHeight * 0.70,
-    	    CONFIG.EYE_RADIUS,
-    	    0,
-    	    Math.PI * 2
-	);
-	ctx.fill();
-
-        ctx.restore();
-    }
-
-    /**
-     * ウイルスを描画する
-     * @param {CanvasRenderingContext2D} ctx
-     * @param {Object} virus
-     */
-    drawVirus(ctx, virus) {
-
-        const spikeCount = 10;
-
-        const inner = virus.radius * 0.9;
-        const outer = virus.radius * 1.4;
-
-        ctx.save();
-        ctx.translate(virus.x, virus.y);
-
-        // 棘
-        ctx.strokeStyle = "rgba(80,220,120,0.8)";
-        ctx.lineWidth = 2;
-
-        for (let i = 0; i < spikeCount; i++) {
-
-            const a = i / spikeCount * Math.PI * 2;
-
-            ctx.beginPath();
-            ctx.moveTo(
-                Math.cos(a) * inner,
-                Math.sin(a) * inner
-            );
-
-            ctx.lineTo(
-                Math.cos(a) * outer,
-                Math.sin(a) * outer
-            );
-
-            ctx.stroke();
+            this.clearTime = this.survivalLimit;
+            this.clear();
 
         }
 
-        // 本体
-        ctx.fillStyle = "rgba(80,220,120,0.68)";
+    }
 
-        ctx.beginPath();
-        ctx.arc(0, 0, virus.radius, 0, Math.PI * 2);
-        ctx.fill();
+    isGoal() {
 
-        // 核
-        ctx.fillStyle = "rgba(170,120,255,0.35)";
+        // ゴールが存在しないステージ
+        if (this.goalDisabled()) return false;
 
-        ctx.beginPath();
-        ctx.arc(0, 0, virus.radius * 0.45, 0, Math.PI * 2);
-        ctx.fill();
+        const goal = this.maze.goal;
+        const eel = this.eel;
 
-        ctx.restore();
+        return (
+            Math.hypot(goal.x - eel.x, goal.y - eel.y) <
+            goal.radius + eel.radius
+        );
+    }
+
+    goalDisabled() {
+        return this.maze.goal.x < 0;
+    }
+
+    clear() {
+
+        this.isCleared = true;
+
+        this.clearTime =
+            (performance.now() - this.startTime) / 1000;
+
+        console.log(`CLEAR ${this.clearTime.toFixed(2)} sec`);
 
     }
 
-    /**
-     * クリア画面を描画
-     * @param {CanvasRenderingContext2D} ctx
-     * @param {Game} game
-     */
-    drawClearOverlay(ctx, game) {
+    restart() {
 
-        const w = game.canvas.width;
-        const h = game.canvas.height;
+        this.isCleared = false;
 
-        // 半透明背景
-        ctx.fillStyle = "rgba(0,0,0,0.45)";
-        ctx.fillRect(0, 0, w, h);
+        // 同じ迷路で再スタート
+        this.eel.reset();
+        this.input.reset();
 
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
+        this.startTime = performance.now();
+        this.clearTime = 0;
+    }
 
-        // CLEAR!
-        ctx.fillStyle = "#ffd54f";
-        ctx.font = "bold 56px sans-serif";
-        ctx.fillText("CLEAR!", w / 2, h / 2 - 60);
+    draw() {
 
-        // タイム
-        ctx.fillStyle = "white";
-        ctx.font = "32px sans-serif";
-        ctx.fillText(
-            `${game.clearTime.toFixed(2)} sec`,
-            w / 2,
-            h / 2 + 5
-        );
+        this.renderer.draw();
 
-        // リトライ案内
-        ctx.fillStyle = "#dddddd";
-        ctx.font = "22px sans-serif";
-        ctx.fillText(
-            "Tap / Click to Retry",
-            w / 2,
-            h / 2 + 60
-        );
+    }
+
+    loop() {
+
+        this.update();
+
+        this.draw();
+
+        requestAnimationFrame(() => this.loop());
+
     }
 
 }
