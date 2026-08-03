@@ -38,6 +38,32 @@ export class Game {
         // リサイズイベント
         window.addEventListener("resize", () => this.resize());
 
+        // タブ非表示中は一時停止
+        document.addEventListener("visibilitychange", () => {
+
+            if (document.hidden) {
+
+                this.pauseStart = performance.now();
+
+            } else {
+
+                if (this.pauseStart) {
+
+                    const paused =
+                        performance.now() - this.pauseStart;
+
+                    this.startTime += paused;
+                    this.pauseStart = 0;
+
+                }
+
+             }
+
+        });
+
+        // 一時停止管理
+        this.pauseStart = 0;
+
         // クリア画面タップ／クリックでリトライ
         const retry = () => {
             if (this.isCleared) {
@@ -118,7 +144,7 @@ export class Game {
 
         if (elapsed >= this.survivalLimit) {
 
-            this.clearTime = elapsed;
+            this.clearTime = this.survivalLimit;
             this.clear();
 
         }
