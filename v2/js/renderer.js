@@ -21,7 +21,7 @@ export class Renderer {
         // 背景
         let grad;
 
-        if (maze.currentStage === 2) {
+        if (maze.stage === 2) {
 
             // Stage2: 感染生け簀（濁った養殖水）
             grad = ctx.createLinearGradient(
