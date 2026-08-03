@@ -38,7 +38,7 @@ export class Game {
         // リサイズイベント
         window.addEventListener("resize", () => this.resize());
 
-         // 一時停止管理
+        // 一時停止管理
         this.pauseStart = 0;
 
         // タブ非表示中は一時停止
@@ -173,10 +173,7 @@ export class Game {
 
         this.isCleared = true;
 
-        this.clearTime =
-            (performance.now() - this.startTime) / 1000;
-
-        console.log(`CLEAR ${this.clearTime.toFixed(2)} sec`);
+        // clearTime は呼び出し側で設定する
 
     }
 
