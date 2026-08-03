@@ -131,21 +131,37 @@ export class Game {
 
         if (len > 0.001) {
 
-            const speed = 0.6; // まずはかなり遅く
+            const speed = 0.6;
 
             this.enemy.x += dx / len * speed;
             this.enemy.y += dy / len * speed;
 
         }
 
-        // サバイバルクリア判定
-        const elapsed =
-            (performance.now() - this.startTime) / 1000;
+        // Stage1: ゴール判定
+        if (this.maze.stage === 1 && this.isGoal()) {
 
-        if (elapsed >= this.survivalLimit) {
+            this.clearTime =
+                (performance.now() - this.startTime) / 1000;
 
-            this.clearTime = this.survivalLimit;
             this.clear();
+            return;
+
+        }
+
+        // Stage2: サバイバル判定
+        if (this.maze.stage === 2) {
+
+            const elapsed =
+                (performance.now() - this.startTime) / 1000;
+
+            if (elapsed >= this.survivalLimit) {
+
+                this.clearTime = this.survivalLimit;
+                this.clear();
+                return;
+
+            }
 
         }
 
