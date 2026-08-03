@@ -32,6 +32,9 @@ export class Game {
         this.startTime = 0;
         this.clearTime = 0;
 
+        // サバイバル設定
+        this.survivalLimit = 20; // 秒
+
         // リサイズイベント
         window.addEventListener("resize", () => this.resize());
 
@@ -109,8 +112,15 @@ export class Game {
 
         }
 
-        if (this.isGoal()) {
+        // サバイバルクリア判定
+        const elapsed =
+            (performance.now() - this.startTime) / 1000;
+
+        if (elapsed >= this.survivalLimit) {
+
+            this.clearTime = elapsed;
             this.clear();
+
         }
 
     }
