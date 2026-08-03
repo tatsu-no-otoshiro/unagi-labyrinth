@@ -38,6 +38,9 @@ export class Game {
         // リサイズイベント
         window.addEventListener("resize", () => this.resize());
 
+         // 一時停止管理
+        this.pauseStart = 0;
+
         // タブ非表示中は一時停止
         document.addEventListener("visibilitychange", () => {
 
@@ -60,9 +63,6 @@ export class Game {
              }
 
         });
-
-        // 一時停止管理
-        this.pauseStart = 0;
 
         // クリア画面タップ／クリックでリトライ
         const retry = () => {
