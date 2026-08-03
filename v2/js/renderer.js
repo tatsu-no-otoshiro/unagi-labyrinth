@@ -220,6 +220,11 @@ export class Renderer {
             this.drawClearOverlay(ctx, game);
         }
 
+        // GAME OVER 演出
+        if (game.isGameOver) {
+            this.drawGameOverOverlay(ctx);
+        }
+
     }
 
     /**
@@ -704,6 +709,34 @@ export class Renderer {
             w / 2,
             h / 2 + 60
         );
+    }
+
+    drawGameOverOverlay(ctx) {
+
+        const w = this.game.canvas.width;
+        const h = this.game.canvas.height;
+
+        // 半透明背景
+        ctx.fillStyle = "rgba(0,0,0,0.55)";
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+
+        // INFECTED
+        ctx.fillStyle = "#8cff9a";
+        ctx.font = "bold 60px sans-serif";
+        ctx.fillText("INFECTED", w / 2, h / 2 - 20);
+
+        // 再挑戦案内
+        ctx.fillStyle = "#dddddd";
+        ctx.font = "24px sans-serif";
+        ctx.fillText(
+            "Tap / Click to Retry",
+            w / 2,
+            h / 2 + 40
+        );
+
     }
 
 }
