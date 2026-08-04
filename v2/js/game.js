@@ -27,10 +27,17 @@ export class Game {
 
         // ゲーム状態
         this.isCleared = false;
+        this.isGameOver = false;
 
         // タイマー
         this.startTime = 0;
         this.clearTime = 0;
+
+        // GAME OVER 時点の経過時間
+        this.gameOverElapsed = 0;
+
+        // requestAnimationFrame 管理
+        this.animationId = null;
 
         // サバイバル設定
         this.survivalLimit = 20; // 秒
@@ -95,6 +102,11 @@ export class Game {
 
         this.eel.reset();
         this.input.reset();
+
+        // 古いループを停止
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+        }
 
         this.loop();
 
@@ -242,6 +254,9 @@ export class Game {
 
     gameOver() {
 
+        this.gameOverElapsed =
+            (performance.now() - this.startTime) / 1000;
+
         this.isGameOver = true;
         this.isCleared = false;
 
@@ -265,7 +280,8 @@ export class Game {
 
         this.draw();
 
-        requestAnimationFrame(() => this.loop());
+        this.animationId =
+            requestAnimationFrame(() => this.loop());
 
     }
 
