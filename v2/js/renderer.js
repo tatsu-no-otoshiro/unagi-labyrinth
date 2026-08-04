@@ -191,7 +191,13 @@ export class Renderer {
         this.drawHead(ctx, eel);
 
         // 敵（ウイルス）
-        this.drawVirus(ctx, this.game.enemy);
+        for (const virus of this.game.enemies) {
+
+            if (!virus) continue;
+
+            this.drawVirus(ctx, virus);
+
+        }
 
         // サバイバルタイマー表示
         if (maze.stage === 2 && !game.isCleared) {
