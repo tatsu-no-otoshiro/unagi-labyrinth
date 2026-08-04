@@ -59,14 +59,16 @@ export class Eel {
 
     	    this.body.push({
 
-        	x:
-            	    this.head.x -
-            	    spacing * (i + 1),
+                x:
+                    this.head.x -
+                    spacing * (i + 1),
 
-        	y:
-            	    this.head.y
+                y:
+                    this.head.y,
 
-    	    });
+                radius: CONFIG.BODY_RADIUS
+
+            });
 
 	}
 
