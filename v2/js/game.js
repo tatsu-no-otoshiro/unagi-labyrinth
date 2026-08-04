@@ -136,17 +136,21 @@ export class Game {
         this.eel.update();
 
         // 敵をゆっくり追尾
-        const dx = this.eel.head.x - this.enemy.x;
-        const dy = this.eel.head.y - this.enemy.y;
+        for (const enemy of this.enemies) {
 
-        const len = Math.hypot(dx, dy);
+            const dx = this.eel.head.x - enemy.x;
+            const dy = this.eel.head.y - enemy.y;
 
-        if (len > 0.001) {
+            const len = Math.hypot(dx, dy);
 
-            const speed = 0.6;
+            if (len > 0.001) {
 
-            this.enemy.x += dx / len * speed;
-            this.enemy.y += dy / len * speed;
+                const speed = 0.6;
+
+                enemy.x += dx / len * speed;
+                enemy.y += dy / len * speed;
+
+            }
 
         }
 
