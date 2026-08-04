@@ -138,6 +138,8 @@ export class Game {
         // 敵をゆっくり追尾
         for (const enemy of this.enemies) {
 
+            if (!enemy) continue;
+
             const dx = this.eel.head.x - enemy.x;
             const dy = this.eel.head.y - enemy.y;
 
