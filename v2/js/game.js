@@ -136,12 +136,12 @@ export class Game {
         this.eel.update();
 
         // 敵をゆっくり追尾
-        for (const enemy of this.enemies) {
+        for (const virus of this.enemies) {
 
-            if (!enemy) continue;
+            if (!virus) continue;
 
-            const dx = this.eel.head.x - enemy.x;
-            const dy = this.eel.head.y - enemy.y;
+            const dx = this.eel.head.x - virus.x;
+            const dy = this.eel.head.y - virus.y;
 
             const len = Math.hypot(dx, dy);
 
@@ -149,8 +149,8 @@ export class Game {
 
                 const speed = 0.6;
 
-                enemy.x += dx / len * speed;
-                enemy.y += dy / len * speed;
+                virus.x += dx / len * speed;
+                virus.y += dy / len * speed;
 
             }
 
@@ -213,32 +213,36 @@ export class Game {
 
     isHitVirus() {
 
-        const enemy = this.enemy;
+        for (const enemy of this.enemies) {
 
-        // 頭判定
-        {
-            const dx = this.eel.head.x - enemy.x;
-            const dy = this.eel.head.y - enemy.y;
+            if (!enemy) continue;
 
-            if (
-                Math.hypot(dx, dy) <
-                this.eel.radius + enemy.radius
-            ) {
-                return true;
+            // 頭判定
+            {
+                const dx = this.eel.head.x - enemy.x;
+                const dy = this.eel.head.y - enemy.y;
+
+                if (
+                    Math.hypot(dx, dy) <
+                    this.eel.radius + enemy.radius
+                ) {
+                    return true;
+                }
             }
-        }
 
-        // 胴体判定
-        for (const p of this.eel.body) {
+            // 胴体判定
+            for (const p of this.eel.body) {
 
-            const dx = p.x - enemy.x;
-            const dy = p.y - enemy.y;
+                const dx = p.x - enemy.x;
+                const dy = p.y - enemy.y;
 
-            if (
-                Math.hypot(dx, dy) <
-                p.radius + enemy.radius
-            ) {
-                return true;
+                if (
+                    Math.hypot(dx, dy) <
+                    p.radius + enemy.radius
+                ) {
+                    return true;
+                }
+
             }
 
         }
