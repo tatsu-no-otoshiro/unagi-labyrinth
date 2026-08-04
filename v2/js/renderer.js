@@ -196,8 +196,18 @@ export class Renderer {
         // サバイバルタイマー表示
         if (maze.stage === 2 && !game.isCleared) {
 
-            const elapsed =
-                (performance.now() - game.startTime) / 1000;
+            let elapsed;
+
+            if (game.isGameOver) {
+
+                elapsed = game.gameOverElapsed;
+
+            } else {
+
+                elapsed =
+                    (performance.now() - game.startTime) / 1000;
+
+            }
 
             const remain =
                 Math.max(0, game.survivalLimit - elapsed);
