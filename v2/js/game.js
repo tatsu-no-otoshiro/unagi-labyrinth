@@ -90,9 +90,14 @@ export class Game {
         // Stage2 テスト
         this.maze.setStage(2);
 
-        // 敵を左上へ配置
-        this.enemy.x = this.maze.offsetX + this.maze.tileSize * 1.5;
-        this.enemy.y = this.maze.offsetY + this.maze.tileSize * 1.5;
+        // 敵を初期化（1体）
+        this.enemies = [
+            {
+                x: this.maze.offsetX + this.maze.tileSize * 1.5,
+                y: this.maze.offsetY + this.maze.tileSize * 1.5,
+                radius: 12
+            }
+        ];
 
         this.eel.reset();
         this.input.reset();
