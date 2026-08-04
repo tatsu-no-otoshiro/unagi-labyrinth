@@ -82,6 +82,7 @@ export class Game {
         this.clearTime = 0;
 
         this.isCleared = false;
+        this.isGameOver = false;
 
         this.resize();
 
@@ -118,8 +119,8 @@ export class Game {
 
     update() {
 
-        // クリア中は移動停止
-        if (this.isCleared) return;
+        // クリア中・ゲームオーバー中は停止
+        if (this.isCleared || this.isGameOver) return;
 
         this.eel.update();
 
@@ -235,11 +236,14 @@ export class Game {
 
         // clearTime は呼び出し側で設定する
 
+        this.isGameOver = false;
+
     }
 
     gameOver() {
 
         this.isGameOver = true;
+        this.isCleared = false;
 
     }
 
