@@ -159,7 +159,7 @@ export class Game {
                 const isWide =
                     this.canvas.width >= 700;
 
-                const speed = isWide ? 0.75 : 0.60;
+                const speed = isWide ? 0.80 : 0.60;
 
                 virus.x += dx / len * speed;
                 virus.y += dy / len * speed;
