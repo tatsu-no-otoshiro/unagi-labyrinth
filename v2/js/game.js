@@ -155,7 +155,11 @@ export class Game {
 
             if (len > 0.001) {
 
-                const speed = 0.6;
+                // PC は少し速く
+                const isWide =
+                    this.canvas.width >= 700;
+
+                const speed = isWide ? 0.75 : 0.60;
 
                 virus.x += dx / len * speed;
                 virus.y += dy / len * speed;
