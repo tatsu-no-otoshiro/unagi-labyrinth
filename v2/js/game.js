@@ -36,6 +36,11 @@ export class Game {
         // サバイバル設定
         this.survivalLimit = 20; // 秒
 
+        // 敵増殖設定
+        this.maxEnemies = 4;
+        this.spawnInterval = 5; // 秒
+        this.spawnCount = 1;    // 初期1体
+
         // リサイズイベント
         window.addEventListener("resize", () => this.resize());
 
@@ -101,6 +106,9 @@ export class Game {
 
         this.eel.reset();
         this.input.reset();
+
+        // 増殖状態リセット
+        this.spawnCount = 1;
 
         // 古いループを停止
         if (this.animationId) {
@@ -172,6 +180,27 @@ export class Game {
 
             this.clear();
             return;
+
+        }
+
+        // 敵増殖
+        if (this.maze.stage === 2) {
+
+            const elapsed =
+                (performance.now() - this.startTime) / 1000;
+
+            const targetCount =
+                Math.min(
+                    this.maxEnemies,
+                    1 + Math.floor(elapsed / this.spawnInterval)
+                );
+
+            while (this.spawnCount < targetCount) {
+
+                this.spawnEnemy(this.spawnCount);
+                this.spawnCount++;
+
+            }
 
         }
 
@@ -268,6 +297,38 @@ export class Game {
 
         this.isGameOver = true;
         this.isCleared = false;
+
+    }
+
+    spawnEnemy(index) {
+
+        const ts = this.maze.tileSize;
+        const ox = this.maze.offsetX;
+        const oy = this.maze.offsetY;
+
+        const positions = [
+
+            // 左上
+            { x: ox + ts * 1.5,  y: oy + ts * 1.5 },
+
+            // 右上
+            { x: ox + ts * 13.5, y: oy + ts * 1.5 },
+
+            // 左下
+            { x: ox + ts * 1.5,  y: oy + ts * 13.5 },
+
+            // 右下
+            { x: ox + ts * 13.5, y: oy + ts * 13.5 }
+
+        ];
+
+        const p = positions[index];
+
+        this.enemies.push({
+            x: p.x,
+            y: p.y,
+            radius: 12
+        });
 
     }
 
