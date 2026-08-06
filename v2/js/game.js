@@ -84,6 +84,10 @@ export class Game {
 
     start() {
 
+    alert(`width=${window.innerWidth}`);
+
+    this.startTime = performance.now();
+
         this.startTime = performance.now();
         this.clearTime = 0;
 
