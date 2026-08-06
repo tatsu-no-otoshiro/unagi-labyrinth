@@ -92,6 +92,12 @@ export class Game {
 
         this.resize();
 
+        // PC判定
+        const isWide = this.canvas.width >= 700;
+
+        // PCは5体、スマホは4体
+        this.maxEnemies = isWide ? 5 : 4;
+
         // Stage2 テスト
         this.maze.setStage(2);
 
@@ -193,11 +199,16 @@ export class Game {
             const elapsed =
                 (performance.now() - this.startTime) / 1000;
 
-            const targetCount =
-                Math.min(
-                    this.maxEnemies,
-                    1 + Math.floor(elapsed / this.spawnInterval)
-                );
+            let targetCount =
+                1 + Math.floor(elapsed / this.spawnInterval);
+
+            // PCだけ18秒で5体目
+            if (this.maxEnemies === 5 && elapsed >= 18) {
+                targetCount = 5;
+            }
+
+            targetCount =
+                Math.min(this.maxEnemies, targetCount);
 
             while (this.spawnCount < targetCount) {
 
@@ -322,7 +333,10 @@ export class Game {
             { x: ox + ts * 1.5,  y: oy + ts * 13.5 },
 
             // 右下
-            { x: ox + ts * 13.5, y: oy + ts * 13.5 }
+            { x: ox + ts * 13.5, y: oy + ts * 13.5 },
+
+            // 中央やや上
+            { x: ox + ts * 7.5, y: oy + ts * 4.5 }
 
         ];
 
