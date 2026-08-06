@@ -317,6 +317,8 @@ export class Game {
 
     spawnEnemy(index) {
 
+console.log("spawn enemy", index);
+
         const ts = this.maze.tileSize;
         const ox = this.maze.offsetX;
         const oy = this.maze.offsetY;
