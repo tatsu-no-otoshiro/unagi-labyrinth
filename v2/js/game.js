@@ -92,8 +92,11 @@ export class Game {
 
         this.resize();
 
-        // PC判定
-        const isWide = this.canvas.width >= 700;
+        // PC判定（画面幅で判定）
+        const isWide = window.innerWidth >= 700;
+
+console.log("window.innerWidth =", window.innerWidth);
+console.log("maxEnemies =", this.maxEnemies);
 
         // PCは5体、スマホは4体
         this.maxEnemies = isWide ? 5 : 4;
